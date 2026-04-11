@@ -4,8 +4,6 @@ import { put, del } from '@vercel/blob';
 import sharp from 'sharp';
 import crypto from 'crypto';
 
-// Paramètres d'optimisation selon le dossier cible
-// Retourne les dimensions max et la qualité mozjpeg adaptés au contexte d'affichage
 function getOptimizationSettings(folder: string): { width: number; height: number; quality: number } {
   if (folder.includes('crew') || folder.includes('members')) {
     return { width: 800, height: 800, quality: 88 };
@@ -13,7 +11,6 @@ function getOptimizationSettings(folder: string): { width: number; height: numbe
   if (folder.includes('events')) {
     return { width: 1920, height: 1080, quality: 88 };
   }
-  // Voitures : plein écran modal, on garde une résolution maximale
   return { width: 1920, height: 1920, quality: 88 };
 }
 
@@ -38,7 +35,7 @@ export async function POST(request: NextRequest) {
     const { width, height, quality } = getOptimizationSettings(folder);
 
     const optimized = await sharp(buffer)
-      .rotate() // corrige l'orientation EXIF automatiquement
+      .rotate()
       .resize(width, height, { fit: 'inside', withoutEnlargement: true })
       .jpeg({ quality, mozjpeg: true })
       .toBuffer();

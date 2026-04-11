@@ -84,7 +84,6 @@ function MembresContent() {
 		onConfirm: () => {},
 	});
 
-	// Drag-and-drop state
 	const dragIndexRef = useRef<number | null>(null);
 	const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
 	const saveDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -112,7 +111,6 @@ function MembresContent() {
 		fetchMembers();
 	}, []);
 
-	// Sauvegarde l'ordre en base après un délai (debounce 800ms)
 	const saveOrder = useCallback((orderedMembers: Member[]) => {
 		if (saveDebounceRef.current) clearTimeout(saveDebounceRef.current);
 		setIsSavingOrder(true);
@@ -132,7 +130,6 @@ function MembresContent() {
 		}, 800);
 	}, []);
 
-	// Drag-and-drop handlers
 	const handleDragStart = (index: number) => {
 		dragIndexRef.current = index;
 	};
@@ -164,7 +161,6 @@ function MembresContent() {
 		setDragOverIndex(null);
 	};
 
-	// Déplace un membre d'une position dans la liste et sauvegarde automatiquement
 	const moveMember = (index: number, direction: 'up' | 'down') => {
 		const newIndex = direction === 'up' ? index - 1 : index + 1;
 		if (newIndex < 0 || newIndex >= members.length) return;
@@ -365,7 +361,6 @@ function MembresContent() {
 				</div>
 			)}
 
-			{/* Indicateur de sauvegarde automatique */}
 			<div className={`flex items-center gap-2 mb-4 transition-opacity duration-300 ${isSavingOrder ? 'opacity-100' : 'opacity-0'}`}>
 				<svg className="w-3.5 h-3.5 animate-spin text-gray-400" viewBox="0 0 24 24">
 					<circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
@@ -374,7 +369,6 @@ function MembresContent() {
 				<span className="text-xs text-gray-500">Sauvegarde en cours...</span>
 			</div>
 
-			{/* Liste des membres avec drag-and-drop */}
 			<div className="space-y-2">
 				{isLoading ? (
 					<div className="bg-[#141414] border border-white/10 rounded-xl p-8 text-center text-gray-400">Chargement...</div>
@@ -398,7 +392,6 @@ function MembresContent() {
 									canEdit ? 'cursor-grab active:cursor-grabbing' : ''
 								}`}
 							>
-								{/* Poignée drag */}
 								{canEdit && (
 									<div className="shrink-0 text-gray-600 hover:text-gray-400 transition-colors pl-1">
 										<svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -407,10 +400,8 @@ function MembresContent() {
 									</div>
 								)}
 
-								{/* Numéro */}
 								<span className="text-2xl font-black text-white/20 shrink-0 w-8 text-center">#{index + 1}</span>
 
-								{/* Photo */}
 								<div className="relative w-12 h-12 rounded-full overflow-hidden bg-white/10 shrink-0">
 									{member.photo ? (
 										<Image
@@ -427,7 +418,6 @@ function MembresContent() {
 									)}
 								</div>
 
-								{/* Infos */}
 								<div className="flex-1 min-w-0">
 									<div className="flex items-center gap-2">
 										<h3 className="text-white font-medium truncate">{member.name}</h3>
@@ -438,7 +428,6 @@ function MembresContent() {
 									<p className="text-gray-500 text-sm truncate">@{member.instagram} · {member.cars?.length || 0} voiture{(member.cars?.length || 0) > 1 ? 's' : ''}</p>
 								</div>
 
-								{/* Boutons flèches */}
 								{canEdit && (
 									<div className="flex flex-col gap-1 shrink-0">
 										<button
@@ -466,7 +455,6 @@ function MembresContent() {
 									</div>
 								)}
 
-								{/* Actions */}
 								<div className="flex items-center gap-1 shrink-0">
 									{canEdit && (
 										<button

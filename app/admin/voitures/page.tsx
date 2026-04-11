@@ -28,8 +28,6 @@ interface Car {
   isActive: boolean;
 }
 
-// Retourne le label et la couleur de la position dans le pattern de galerie
-// Le pattern se répète tous les 6 voitures
 function getPatternPosition(index: number): { label: string; short: string; colorClass: string } {
   const pos = index % 6;
   const block = Math.floor(index / 6) + 1;
@@ -44,19 +42,15 @@ function getPatternPosition(index: number): { label: string; short: string; colo
   return positions[pos];
 }
 
-// Diagramme visuel du pattern de galerie avec les 6 positions documentées
 function GaragePatternLegend() {
   return (
     <div className="bg-[#141414] border border-white/10 rounded-xl p-6 mb-8">
       <h2 className="text-sm text-white/40 uppercase tracking-[0.3em] mb-4">Pattern de galerie — 6 positions par bloc</h2>
       <div className="flex flex-col lg:flex-row gap-6 items-start">
-        {/* Diagramme visuel */}
         <div className="w-full lg:w-72 shrink-0 space-y-1.5">
-          {/* Ligne 1 : bannière */}
           <div className="h-10 rounded bg-blue-500/20 border border-blue-500/40 flex items-center justify-center">
             <span className="text-blue-300 text-xs font-medium">① Bannière pleine largeur</span>
           </div>
-          {/* Ligne 2 : grille 2 colonnes */}
           <div className="grid grid-cols-2 gap-1.5">
             <div className="h-8 rounded bg-violet-500/20 border border-violet-500/40 flex items-center justify-center">
               <span className="text-violet-300 text-xs">② Grille G</span>
@@ -65,7 +59,6 @@ function GaragePatternLegend() {
               <span className="text-violet-300 text-xs">③ Grille D</span>
             </div>
           </div>
-          {/* Ligne 3 : 2 petites + 1 portrait */}
           <div className="grid grid-cols-2 gap-1.5">
             <div className="space-y-1.5">
               <div className="h-7 rounded bg-orange-500/20 border border-orange-500/40 flex items-center justify-center">
@@ -81,7 +74,6 @@ function GaragePatternLegend() {
           </div>
         </div>
 
-        {/* Légende texte */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 flex-1">
           {[
             { num: '①', short: 'Bannière', desc: 'Grande carte pleine largeur, très mise en valeur. Idéale pour la voiture principale du bloc.', color: 'text-blue-300' },
@@ -176,7 +168,6 @@ function VoituresContent() {
     onConfirm: () => {},
   });
 
-  // Drag-and-drop state
   const dragIndexRef = useRef<number | null>(null);
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
 
@@ -211,8 +202,6 @@ function VoituresContent() {
     fetchData();
   }, []);
 
-  // Sauvegarde l'ordre en base après un délai (debounce 800ms)
-  // Appelé automatiquement après chaque réorganisation
   const saveOrder = useCallback((orderedCars: Car[]) => {
     if (saveDebounceRef.current) clearTimeout(saveDebounceRef.current);
     setIsSavingOrder(true);
@@ -232,7 +221,6 @@ function VoituresContent() {
     }, 800);
   }, []);
 
-  // Drag-and-drop handlers
   const handleDragStart = (index: number) => {
     dragIndexRef.current = index;
   };
@@ -264,7 +252,6 @@ function VoituresContent() {
     setDragOverIndex(null);
   };
 
-  // Déplace une voiture d'une position dans la liste et sauvegarde automatiquement
   const movecar = (index: number, direction: 'up' | 'down') => {
     const newIndex = direction === 'up' ? index - 1 : index + 1;
     if (newIndex < 0 || newIndex >= cars.length) return;
@@ -281,7 +268,6 @@ function VoituresContent() {
     const method = editingCar ? 'PUT' : 'POST';
 
     try {
-      // En création, ne pas envoyer order pour que l'API le calcule automatiquement (fin de liste)
       const payload = editingCar ? formData : (({ order: _order, ...rest }) => rest)(formData);
       const res = await fetch(url, {
         method,
@@ -573,7 +559,6 @@ function VoituresContent() {
 
       <GaragePatternLegend />
 
-      {/* Indicateur de sauvegarde automatique */}
       <div className={`flex items-center gap-2 mb-4 transition-opacity duration-300 ${isSavingOrder ? 'opacity-100' : 'opacity-0'}`}>
         <svg className="w-3.5 h-3.5 animate-spin text-gray-400" viewBox="0 0 24 24">
           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
@@ -582,7 +567,6 @@ function VoituresContent() {
         <span className="text-xs text-gray-500">Sauvegarde en cours...</span>
       </div>
 
-      {/* Liste des voitures avec drag-and-drop */}
       <div className="space-y-2">
         {isLoading ? (
           <div className="text-center text-gray-400 py-12">Chargement...</div>
@@ -607,7 +591,6 @@ function VoituresContent() {
                   canEdit ? 'cursor-grab active:cursor-grabbing' : ''
                 }`}
               >
-                {/* Poignée drag */}
                 {canEdit && (
                   <div className="shrink-0 text-gray-600 hover:text-gray-400 transition-colors pl-1">
                     <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -616,7 +599,6 @@ function VoituresContent() {
                   </div>
                 )}
 
-                {/* Numéro + badge position */}
                 <div className="shrink-0 flex flex-col items-center gap-1 w-16">
                   <span className="text-2xl font-black text-white/20">#{index + 1}</span>
                   <span className={`text-[10px] px-1.5 py-0.5 rounded border font-medium leading-tight text-center ${position.colorClass}`}>
@@ -624,7 +606,6 @@ function VoituresContent() {
                   </span>
                 </div>
 
-                {/* Photo */}
                 <div className="relative w-20 h-14 rounded-lg overflow-hidden bg-black shrink-0">
                   {car.photos[0] ? (
                     <Image
@@ -641,19 +622,16 @@ function VoituresContent() {
                   )}
                 </div>
 
-                {/* Infos */}
                 <div className="flex-1 min-w-0">
                   <h3 className="text-white font-medium truncate">{car.model}</h3>
                   <p className="text-lfp-green text-sm">{car.year}</p>
                   <p className="text-gray-500 text-xs truncate">{car.member?.name || 'N/A'} · {car.photos.length} photo{car.photos.length > 1 ? 's' : ''}</p>
                 </div>
 
-                {/* Position tooltip */}
                 <div className="hidden md:block shrink-0 max-w-[180px]">
                   <p className={`text-xs ${position.colorClass.split(' ')[1]}`}>{position.label}</p>
                 </div>
 
-                {/* Boutons flèches */}
                 {canEdit && (
                   <div className="flex flex-col gap-1 shrink-0">
                     <button
@@ -681,7 +659,6 @@ function VoituresContent() {
                   </div>
                 )}
 
-                {/* Actions */}
                 <div className="flex gap-2 shrink-0">
                   {canEdit && (
                     <button

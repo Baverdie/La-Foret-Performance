@@ -8,7 +8,7 @@ import { hasPermission, PERMISSIONS } from '@/lib/permissions';
 import Image from 'next/image';
 
 interface DatePickerProps {
-  value: string; // format YYYY-MM-DD
+  value: string;
   onChange: (date: string) => void;
 }
 
