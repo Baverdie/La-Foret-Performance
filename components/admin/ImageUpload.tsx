@@ -36,11 +36,13 @@ export default function ImageUpload({
 
     try {
       const uploadPromises = validFiles.map(async (file) => {
-        const base64 = await compressImage(file);
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('folder', folder);
+
         const res = await fetch('/api/admin/upload', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ file: base64, folder }),
+          body: formData,
         });
 
         if (!res.ok) throw new Error('Upload failed');
@@ -57,47 +59,11 @@ export default function ImageUpload({
       }
     } catch (error) {
       console.error('Upload error:', error);
-      alert('Erreur lors de l\'upload');
+      alert("Erreur lors de l'upload");
     } finally {
       setIsUploading(false);
     }
   }, [images, multiple, folder, onChange]);
-
-  const compressImage = (file: File, maxSize = 1200, quality = 0.8): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = (e) => {
-        const img = new Image();
-        img.src = e.target?.result as string;
-        img.onload = () => {
-          const canvas = document.createElement('canvas');
-          let { width, height } = img;
-
-          if (width > maxSize || height > maxSize) {
-            if (width > height) {
-              height = (height / width) * maxSize;
-              width = maxSize;
-            } else {
-              width = (width / height) * maxSize;
-              height = maxSize;
-            }
-          }
-
-          canvas.width = width;
-          canvas.height = height;
-
-          const ctx = canvas.getContext('2d');
-          ctx?.drawImage(img, 0, 0, width, height);
-
-          const compressedBase64 = canvas.toDataURL('image/jpeg', quality);
-          resolve(compressedBase64);
-        };
-        img.onerror = reject;
-      };
-      reader.onerror = reject;
-    });
-  };
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();

@@ -112,21 +112,25 @@ export default function HomeClient({ members, cars, events }: HomeClientProps) {
   return (
     <div ref={mainRef} className="relative">
       <Hero />
-      <Crew
-        members={members}
-        selectedMember={selectedMember}
-        onSelectMember={setSelectedMember}
-        onCloseMember={() => setSelectedMember(null)}
-        onOpenCar={openCarFromMember}
-      />
-      <Garage
-        cars={cars}
-        selectedCar={selectedCar}
-        onSelectCar={setSelectedCar}
-        onCloseCar={() => setSelectedCar(null)}
-        onOpenOwner={openMemberFromCar}
-      />
-      <Sorties events={events} />
+      {members.length > 0 && (
+        <Crew
+          members={members}
+          selectedMember={selectedMember}
+          onSelectMember={setSelectedMember}
+          onCloseMember={() => setSelectedMember(null)}
+          onOpenCar={openCarFromMember}
+        />
+      )}
+      {cars.length > 0 && (
+        <Garage
+          cars={cars}
+          selectedCar={selectedCar}
+          onSelectCar={setSelectedCar}
+          onCloseCar={() => setSelectedCar(null)}
+          onOpenOwner={openMemberFromCar}
+        />
+      )}
+      {events.length > 0 && <Sorties events={events} />}
       <Footer />
     </div>
   );

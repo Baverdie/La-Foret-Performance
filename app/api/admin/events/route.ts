@@ -56,6 +56,7 @@ export async function POST(request: NextRequest) {
         description: description || '',
         photo: photo || null,
         order: order || 0,
+        isActive: true,
       },
     });
 

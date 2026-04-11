@@ -3,7 +3,7 @@
 import AdminLayout from '@/components/admin/AdminLayout';
 import ImageUpload from '@/components/admin/ImageUpload';
 import { useSession } from 'next-auth/react';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { hasPermission, PERMISSIONS } from '@/lib/permissions';
 import Image from 'next/image';
 
@@ -26,6 +26,81 @@ interface Car {
   member: Member;
   order: number;
   isActive: boolean;
+}
+
+// Retourne le label et la couleur de la position dans le pattern de galerie
+// Le pattern se répète tous les 6 voitures
+function getPatternPosition(index: number): { label: string; short: string; colorClass: string } {
+  const pos = index % 6;
+  const block = Math.floor(index / 6) + 1;
+  const positions = [
+    { short: 'Bannière', label: `Bloc ${block} · Bannière pleine largeur`, colorClass: 'bg-blue-500/20 text-blue-300 border-blue-500/40' },
+    { short: 'Grille G', label: `Bloc ${block} · Grille gauche`, colorClass: 'bg-violet-500/20 text-violet-300 border-violet-500/40' },
+    { short: 'Grille D', label: `Bloc ${block} · Grille droite`, colorClass: 'bg-violet-500/20 text-violet-300 border-violet-500/40' },
+    { short: 'Petite HG', label: `Bloc ${block} · Petite haut-gauche`, colorClass: 'bg-orange-500/20 text-orange-300 border-orange-500/40' },
+    { short: 'Petite BG', label: `Bloc ${block} · Petite bas-gauche`, colorClass: 'bg-orange-500/20 text-orange-300 border-orange-500/40' },
+    { short: 'Portrait D', label: `Bloc ${block} · Portrait droite`, colorClass: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40' },
+  ];
+  return positions[pos];
+}
+
+// Diagramme visuel du pattern de galerie avec les 6 positions documentées
+function GaragePatternLegend() {
+  return (
+    <div className="bg-[#141414] border border-white/10 rounded-xl p-6 mb-8">
+      <h2 className="text-sm text-white/40 uppercase tracking-[0.3em] mb-4">Pattern de galerie — 6 positions par bloc</h2>
+      <div className="flex flex-col lg:flex-row gap-6 items-start">
+        {/* Diagramme visuel */}
+        <div className="w-full lg:w-72 shrink-0 space-y-1.5">
+          {/* Ligne 1 : bannière */}
+          <div className="h-10 rounded bg-blue-500/20 border border-blue-500/40 flex items-center justify-center">
+            <span className="text-blue-300 text-xs font-medium">① Bannière pleine largeur</span>
+          </div>
+          {/* Ligne 2 : grille 2 colonnes */}
+          <div className="grid grid-cols-2 gap-1.5">
+            <div className="h-8 rounded bg-violet-500/20 border border-violet-500/40 flex items-center justify-center">
+              <span className="text-violet-300 text-xs">② Grille G</span>
+            </div>
+            <div className="h-8 rounded bg-violet-500/20 border border-violet-500/40 flex items-center justify-center">
+              <span className="text-violet-300 text-xs">③ Grille D</span>
+            </div>
+          </div>
+          {/* Ligne 3 : 2 petites + 1 portrait */}
+          <div className="grid grid-cols-2 gap-1.5">
+            <div className="space-y-1.5">
+              <div className="h-7 rounded bg-orange-500/20 border border-orange-500/40 flex items-center justify-center">
+                <span className="text-orange-300 text-xs">④ HG</span>
+              </div>
+              <div className="h-7 rounded bg-orange-500/20 border border-orange-500/40 flex items-center justify-center">
+                <span className="text-orange-300 text-xs">⑤ BG</span>
+              </div>
+            </div>
+            <div className="h-[3.875rem] rounded bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center">
+              <span className="text-emerald-300 text-xs">⑥ Portrait D</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Légende texte */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 flex-1">
+          {[
+            { num: '①', short: 'Bannière', desc: 'Grande carte pleine largeur, très mise en valeur. Idéale pour la voiture principale du bloc.', color: 'text-blue-300' },
+            { num: '②③', short: 'Grille gauche / droite', desc: 'Deux cartes côte à côte en format paysage. Bon contraste entre deux voitures.', color: 'text-violet-300' },
+            { num: '④⑤', short: 'Petites haut/bas gauche', desc: 'Deux petites cartes empilées. Format compact, idéal pour des détails ou voitures secondaires.', color: 'text-orange-300' },
+            { num: '⑥', short: 'Portrait droite', desc: 'Grande carte portrait qui occupe toute la hauteur droite. Superbe pour les photos verticales.', color: 'text-emerald-300' },
+          ].map(({ num, short, desc, color }) => (
+            <div key={num} className="flex gap-3">
+              <span className={`text-lg font-bold shrink-0 ${color}`}>{num}</span>
+              <div>
+                <p className={`text-sm font-medium ${color}`}>{short}</p>
+                <p className="text-xs text-gray-500 mt-0.5">{desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
 }
 
 interface ConfirmModalProps {
@@ -70,6 +145,8 @@ function VoituresContent() {
   const [cars, setCars] = useState<Car[]>([]);
   const [members, setMembers] = useState<Member[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isSavingOrder, setIsSavingOrder] = useState(false);
+  const saveDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [editingCar, setEditingCar] = useState<Car | null>(null);
   const [formData, setFormData] = useState({
@@ -98,6 +175,10 @@ function VoituresContent() {
     message: '',
     onConfirm: () => {},
   });
+
+  // Drag-and-drop state
+  const dragIndexRef = useRef<number | null>(null);
+  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
 
   const userPermissions = session?.user?.permissions || [];
   const canCreate = hasPermission(userPermissions, PERMISSIONS.CARS_CREATE);
@@ -130,6 +211,69 @@ function VoituresContent() {
     fetchData();
   }, []);
 
+  // Sauvegarde l'ordre en base après un délai (debounce 800ms)
+  // Appelé automatiquement après chaque réorganisation
+  const saveOrder = useCallback((orderedCars: Car[]) => {
+    if (saveDebounceRef.current) clearTimeout(saveDebounceRef.current);
+    setIsSavingOrder(true);
+    saveDebounceRef.current = setTimeout(async () => {
+      try {
+        const orders = orderedCars.map((car, index) => ({ id: car.id, order: index }));
+        await fetch('/api/admin/cars/reorder', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ orders }),
+        });
+      } catch (error) {
+        console.error('Error saving order:', error);
+      } finally {
+        setIsSavingOrder(false);
+      }
+    }, 800);
+  }, []);
+
+  // Drag-and-drop handlers
+  const handleDragStart = (index: number) => {
+    dragIndexRef.current = index;
+  };
+
+  const handleDragOver = (e: React.DragEvent, index: number) => {
+    e.preventDefault();
+    setDragOverIndex(index);
+  };
+
+  const handleDrop = (targetIndex: number) => {
+    const sourceIndex = dragIndexRef.current;
+    if (sourceIndex === null || sourceIndex === targetIndex) {
+      dragIndexRef.current = null;
+      setDragOverIndex(null);
+      return;
+    }
+
+    const newCars = [...cars];
+    const [moved] = newCars.splice(sourceIndex, 1);
+    newCars.splice(targetIndex, 0, moved);
+    setCars(newCars);
+    saveOrder(newCars);
+    dragIndexRef.current = null;
+    setDragOverIndex(null);
+  };
+
+  const handleDragEnd = () => {
+    dragIndexRef.current = null;
+    setDragOverIndex(null);
+  };
+
+  // Déplace une voiture d'une position dans la liste et sauvegarde automatiquement
+  const movecar = (index: number, direction: 'up' | 'down') => {
+    const newIndex = direction === 'up' ? index - 1 : index + 1;
+    if (newIndex < 0 || newIndex >= cars.length) return;
+    const newCars = [...cars];
+    [newCars[index], newCars[newIndex]] = [newCars[newIndex], newCars[index]];
+    setCars(newCars);
+    saveOrder(newCars);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -137,10 +281,12 @@ function VoituresContent() {
     const method = editingCar ? 'PUT' : 'POST';
 
     try {
+      // En création, ne pas envoyer order pour que l'API le calcule automatiquement (fin de liste)
+      const payload = editingCar ? formData : (({ order: _order, ...rest }) => rest)(formData);
       const res = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
 
       if (res.ok) {
@@ -195,7 +341,6 @@ function VoituresContent() {
       danger: true,
       onConfirm: async () => {
         setConfirmModal(prev => ({ ...prev, isOpen: false }));
-
         try {
           const res = await fetch(`/api/admin/cars/${id}`, { method: 'DELETE' });
           if (res.ok) {
@@ -211,7 +356,6 @@ function VoituresContent() {
       },
     });
   };
-
 
   return (
     <div>
@@ -352,7 +496,7 @@ function VoituresContent() {
                     setFormData({
                       ...formData,
                       photos: newPhotos,
-                      containPhotos: validContainPhotos
+                      containPhotos: validContainPhotos,
                     });
                   }}
                   multiple
@@ -381,7 +525,7 @@ function VoituresContent() {
                               src={photo}
                               alt={`Photo ${index + 1}`}
                               fill
-                              className={isContain ? "object-contain" : "object-cover"}
+                              className={isContain ? 'object-contain' : 'object-cover'}
                             />
                           </div>
                           <button
@@ -427,52 +571,122 @@ function VoituresContent() {
         </div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <GaragePatternLegend />
+
+      {/* Indicateur de sauvegarde automatique */}
+      <div className={`flex items-center gap-2 mb-4 transition-opacity duration-300 ${isSavingOrder ? 'opacity-100' : 'opacity-0'}`}>
+        <svg className="w-3.5 h-3.5 animate-spin text-gray-400" viewBox="0 0 24 24">
+          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+        </svg>
+        <span className="text-xs text-gray-500">Sauvegarde en cours...</span>
+      </div>
+
+      {/* Liste des voitures avec drag-and-drop */}
+      <div className="space-y-2">
         {isLoading ? (
-          <div className="col-span-full text-center text-gray-400 py-12">Chargement...</div>
+          <div className="text-center text-gray-400 py-12">Chargement...</div>
         ) : cars.length === 0 ? (
-          <div className="col-span-full text-center text-gray-400 py-12">Aucune voiture</div>
+          <div className="text-center text-gray-400 py-12">Aucune voiture</div>
         ) : (
-          cars.map((car) => (
-            <div
-              key={car.id}
-              className={`bg-[#141414] border rounded-xl overflow-hidden ${
-                car.isActive ? 'border-white/10' : 'border-red-500/30 opacity-60'
-              }`}
-            >
-              <div className="relative h-48 bg-black">
-                {car.photos[0] ? (
-                  <Image
-                    src={car.photos[0]}
-                    alt={car.model}
-                    fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    className="object-cover"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center text-gray-600">
-                    Pas de photo
+          cars.map((car, index) => {
+            const position = getPatternPosition(index);
+            const isDraggingOver = dragOverIndex === index;
+
+            return (
+              <div
+                key={car.id}
+                draggable={canEdit}
+                onDragStart={() => handleDragStart(index)}
+                onDragOver={(e) => handleDragOver(e, index)}
+                onDrop={() => handleDrop(index)}
+                onDragEnd={handleDragEnd}
+                className={`flex items-center gap-4 bg-[#141414] border rounded-xl p-3 transition-all ${
+                  car.isActive ? 'border-white/10' : 'border-red-500/30 opacity-60'
+                } ${isDraggingOver ? 'border-white/40 bg-white/5 scale-[1.01]' : ''} ${
+                  canEdit ? 'cursor-grab active:cursor-grabbing' : ''
+                }`}
+              >
+                {/* Poignée drag */}
+                {canEdit && (
+                  <div className="shrink-0 text-gray-600 hover:text-gray-400 transition-colors pl-1">
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 8h16M4 16h16" />
+                    </svg>
                   </div>
                 )}
-                <div className="absolute top-2 right-2 flex gap-1">
-                  <span className="px-2 py-1 bg-black/60 text-white text-xs rounded">
-                    {car.photos.length} photos
+
+                {/* Numéro + badge position */}
+                <div className="shrink-0 flex flex-col items-center gap-1 w-16">
+                  <span className="text-2xl font-black text-white/20">#{index + 1}</span>
+                  <span className={`text-[10px] px-1.5 py-0.5 rounded border font-medium leading-tight text-center ${position.colorClass}`}>
+                    {position.short}
                   </span>
                 </div>
-              </div>
 
-              <div className="p-4">
-                <h3 className="text-lg font-display text-white mb-1">{car.model}</h3>
-                <p className="text-lfp-green text-sm mb-2">{car.year}</p>
-                <p className="text-gray-400 text-sm mb-4">
-                  Propriétaire: {car.member?.name || 'N/A'}
-                </p>
+                {/* Photo */}
+                <div className="relative w-20 h-14 rounded-lg overflow-hidden bg-black shrink-0">
+                  {car.photos[0] ? (
+                    <Image
+                      src={car.photos[0]}
+                      alt={car.model}
+                      fill
+                      sizes="80px"
+                      className="object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-gray-600 text-xs">
+                      No photo
+                    </div>
+                  )}
+                </div>
 
-                <div className="flex gap-2">
+                {/* Infos */}
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-white font-medium truncate">{car.model}</h3>
+                  <p className="text-lfp-green text-sm">{car.year}</p>
+                  <p className="text-gray-500 text-xs truncate">{car.member?.name || 'N/A'} · {car.photos.length} photo{car.photos.length > 1 ? 's' : ''}</p>
+                </div>
+
+                {/* Position tooltip */}
+                <div className="hidden md:block shrink-0 max-w-[180px]">
+                  <p className={`text-xs ${position.colorClass.split(' ')[1]}`}>{position.label}</p>
+                </div>
+
+                {/* Boutons flèches */}
+                {canEdit && (
+                  <div className="flex flex-col gap-1 shrink-0">
+                    <button
+                      type="button"
+                      onClick={() => movecar(index, 'up')}
+                      disabled={index === 0}
+                      className="p-1.5 rounded hover:bg-white/10 text-gray-400 hover:text-white transition-colors disabled:opacity-20 disabled:cursor-not-allowed cursor-pointer"
+                      title="Monter"
+                    >
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                      </svg>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => movecar(index, 'down')}
+                      disabled={index === cars.length - 1}
+                      className="p-1.5 rounded hover:bg-white/10 text-gray-400 hover:text-white transition-colors disabled:opacity-20 disabled:cursor-not-allowed cursor-pointer"
+                      title="Descendre"
+                    >
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
+                  </div>
+                )}
+
+                {/* Actions */}
+                <div className="flex gap-2 shrink-0">
                   {canEdit && (
                     <button
                       onClick={() => handleEdit(car)}
-                      className="flex-1 px-3 py-2 bg-white/10 hover:bg-white/20 text-white text-sm rounded-lg transition-colors cursor-pointer"
+                      className="px-3 py-2 bg-white/10 hover:bg-white/20 text-white text-sm rounded-lg transition-colors cursor-pointer"
                     >
                       Modifier
                     </button>
@@ -487,8 +701,8 @@ function VoituresContent() {
                   )}
                 </div>
               </div>
-            </div>
-          ))
+            );
+          })
         )}
       </div>
     </div>

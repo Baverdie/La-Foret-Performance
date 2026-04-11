@@ -75,7 +75,7 @@ export async function getPublicCars(): Promise<PublicCar[]> {
     include: {
       member: true,
     },
-    orderBy: { createdAt: 'asc' },
+    orderBy: { order: 'asc' },
   });
 
   return cars.map((car) => ({
@@ -95,7 +95,6 @@ export async function getPublicCars(): Promise<PublicCar[]> {
 
 export async function getPublicEvents(): Promise<PublicEvent[]> {
   const events = await prisma.event.findMany({
-    where: { isActive: true },
     orderBy: { date: 'desc' },
   });
 

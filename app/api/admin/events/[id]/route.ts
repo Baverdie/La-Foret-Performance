@@ -71,10 +71,12 @@ export async function DELETE(
   try {
     const { id } = await params;
 
-    const event = await prisma.event.update({
-      where: { id },
-      data: { isActive: false },
-    });
+    const event = await prisma.event.findUnique({ where: { id } });
+    if (!event) {
+      return NextResponse.json({ error: 'Événement non trouvé' }, { status: 404 });
+    }
+
+    await prisma.event.delete({ where: { id } });
 
     await logAction(session!.user.id, 'DELETE', 'EVENT', id, { title: event.title }, request);
 

@@ -372,8 +372,7 @@ function EventsContent() {
           filteredEvents.map((event) => (
             <div
               key={event.id}
-              className={`bg-[#141414] border rounded-xl p-6 flex gap-6 ${event.isActive ? 'border-white/10' : 'border-red-500/30 opacity-60'
-                }`}
+              className="bg-[#141414] border border-white/10 rounded-xl p-6 flex gap-6"
             >
               {event.photo && (
                 <div className="relative w-32 h-24 shrink-0 rounded-lg overflow-hidden bg-black">

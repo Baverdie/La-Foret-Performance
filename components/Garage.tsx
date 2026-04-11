@@ -102,7 +102,7 @@ function CarModal({
 					</motion.a>
 
 					<div className="relative w-full h-full">
-						<AnimatePresence initial={false}>
+						<AnimatePresence>
 							<motion.div
 								key={currentPhotoIndex}
 								initial={{ opacity: 0 }}
