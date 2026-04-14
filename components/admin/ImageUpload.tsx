@@ -25,6 +25,54 @@ export default function ImageUpload({
     ? (Array.isArray(value) ? value : value ? [value] : [])
     : (value ? [value as string] : []);
 
+  const LIMIT = 3.5 * 1024 * 1024;
+
+  const preResizeForServer = (file: File): Promise<Blob> =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (e) => {
+        const img = new Image();
+        img.src = e.target?.result as string;
+        img.onload = () => {
+          const MAX = 1920;
+          let { width, height } = img;
+          if (width > MAX || height > MAX) {
+            if (width > height) { height = Math.round((height / width) * MAX); width = MAX; }
+            else { width = Math.round((width / height) * MAX); height = MAX; }
+          }
+          const canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+          canvas.getContext('2d')?.drawImage(img, 0, 0, width, height);
+          canvas.toBlob(
+            (blob) => resolve(blob ?? new Blob([file])),
+            'image/jpeg',
+            0.97,
+          );
+        };
+        img.onerror = reject;
+      };
+      reader.onerror = reject;
+    });
+
+  const uploadFile = async (file: File): Promise<string> => {
+    const payload = file.size > LIMIT ? await preResizeForServer(file) : file;
+
+    const formData = new FormData();
+    formData.append('file', payload, file.name.replace(/\.[^.]+$/, '.jpg'));
+    formData.append('folder', folder);
+
+    const res = await fetch('/api/admin/upload', {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (!res.ok) throw new Error('Upload failed');
+    const data = await res.json();
+    return data.url;
+  };
+
   const handleFiles = useCallback(async (files: FileList) => {
     const validFiles = Array.from(files).filter(file =>
       file.type.startsWith('image/')
@@ -35,20 +83,7 @@ export default function ImageUpload({
     setIsUploading(true);
 
     try {
-      const uploadPromises = validFiles.map(async (file) => {
-        const formData = new FormData();
-        formData.append('file', file);
-        formData.append('folder', folder);
-
-        const res = await fetch('/api/admin/upload', {
-          method: 'POST',
-          body: formData,
-        });
-
-        if (!res.ok) throw new Error('Upload failed');
-        const data = await res.json();
-        return data.url;
-      });
+      const uploadPromises = validFiles.map((file) => uploadFile(file));
 
       const urls = await Promise.all(uploadPromises);
 
