@@ -21,7 +21,7 @@ export async function PUT(request: NextRequest) {
       )
     );
 
-    await logAction(session!.user.id, 'UPDATE', 'MEMBER', 'bulk-reorder', { count: orders.length }, request);
+    await logAction(session!.user.id, 'UPDATE', 'MEMBER', undefined, { count: orders.length }, request);
 
     return NextResponse.json({ success: true });
   } catch (err) {
