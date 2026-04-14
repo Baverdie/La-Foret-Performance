@@ -57,7 +57,14 @@ export default function ImageUpload({
     });
 
   const uploadFile = async (file: File): Promise<string> => {
-    const payload = file.size > LIMIT ? await preResizeForServer(file) : file;
+    let payload: Blob | File = file;
+    if (file.size > LIMIT) {
+      try {
+        payload = await preResizeForServer(file);
+      } catch {
+        payload = file;
+      }
+    }
 
     const formData = new FormData();
     formData.append('file', payload, file.name.replace(/\.[^.]+$/, '.jpg'));
