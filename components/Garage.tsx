@@ -65,7 +65,7 @@ function CarModal({
 		>
 			<button
 				onClick={onClose}
-				className="fixed top-4 right-4 md:top-8 md:right-8 z-220 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-all duration-300 cursor-pointer"
+				className="fixed top-4 right-4 md:top-8 md:right-8 z-220 w-10 h-10 md:w-12 md:h-12 rounded-none bg-white/10 hover:bg-white/20 flex items-center justify-center transition-all duration-300 cursor-pointer"
 			>
 				<svg className="w-5 h-5 md:w-6 md:h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 					<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -92,7 +92,7 @@ function CarModal({
 						target="_blank"
 						rel="noopener noreferrer"
 						whileHover={{ scale: 1.05 }}
-						className="absolute top-4 left-4 md:top-6 md:left-auto md:right-6 z-30 md:opacity-0 md:group-hover/photo:opacity-100 transition-all duration-300 inline-flex items-center gap-2 md:gap-3 bg-black/80 backdrop-blur-md border border-white/20 hover:border-white text-white py-2 px-4 md:py-3 md:px-5 rounded-full text-sm"
+						className="absolute top-4 left-4 md:top-6 md:left-auto md:right-6 z-30 md:opacity-0 md:group-hover/photo:opacity-100 transition-all duration-300 inline-flex items-center gap-2 md:gap-3 bg-black/80 backdrop-blur-md border border-white/20 hover:border-white text-white py-2 px-4 md:py-3 md:px-5 rounded-none text-sm"
 						onClick={(e) => e.stopPropagation()}
 					>
 						<svg className="w-4 h-4 md:w-5 md:h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -128,7 +128,7 @@ function CarModal({
 						<>
 							<button
 								onClick={prevPhoto}
-								className="absolute left-3 md:left-6 top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-14 md:h-14 rounded-full bg-black/60 backdrop-blur-md border border-white/20 flex items-center justify-center hover:border-white hover:bg-white/10 transition-all duration-300 cursor-pointer"
+								className="absolute left-3 md:left-6 top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-14 md:h-14 rounded-none bg-black/60 backdrop-blur-md border border-white/20 flex items-center justify-center hover:border-white hover:bg-white/10 transition-all duration-300 cursor-pointer"
 							>
 								<svg className="w-5 h-5 md:w-7 md:h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 									<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -136,7 +136,7 @@ function CarModal({
 							</button>
 							<button
 								onClick={nextPhoto}
-								className="absolute right-3 md:right-6 top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-14 md:h-14 rounded-full bg-black/60 backdrop-blur-md border border-white/20 flex items-center justify-center hover:border-white hover:bg-white/10 transition-all duration-300 cursor-pointer"
+								className="absolute right-3 md:right-6 top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-14 md:h-14 rounded-none bg-black/60 backdrop-blur-md border border-white/20 flex items-center justify-center hover:border-white hover:bg-white/10 transition-all duration-300 cursor-pointer"
 							>
 								<svg className="w-5 h-5 md:w-7 md:h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 									<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -151,7 +151,7 @@ function CarModal({
 								<button
 									key={index}
 									onClick={() => setCurrentPhotoIndex(index)}
-									className={`h-1.5 md:h-2 rounded-full transition-all duration-300 ${index === currentPhotoIndex ? 'bg-white w-6 md:w-8' : 'bg-white/30 w-1.5 md:w-2 hover:bg-white/50'
+									className={`h-1.5 md:h-2 rounded-none transition-all duration-300 ${index === currentPhotoIndex ? 'bg-white w-6 md:w-8' : 'bg-white/30 w-1.5 md:w-2 hover:bg-white/50'
 										}`}
 								/>
 							))}
@@ -162,7 +162,7 @@ function CarModal({
 				<div className="w-full md:w-[40%] h-[50vh] md:h-full p-6 md:p-12 overflow-y-auto bg-linear-to-b from-[#141414] to-[#0a0a0a]">
 					<motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="mb-8 md:mb-12">
 						<h2 className="text-4xl md:text-6xl font-display text-white mb-3 md:mb-4 tracking-wider leading-tight">{car.model}</h2>
-						<p className="text-2xl md:text-3xl text-lfp-green font-light">{car.year}</p>
+						<p className="text-2xl md:text-3xl text-lfp-amber font-light">{car.year}</p>
 					</motion.div>
 
 					<motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="mb-8 md:mb-12">
@@ -199,14 +199,14 @@ function CarModal({
 									onOpenOwner?.(car.ownerInstagram, car.owner);
 								}, 120);
 							}}
-							className="w-full inline-flex items-center justify-between gap-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 px-4 md:px-5 py-4 transition-all duration-300 cursor-pointer"
+							className="w-full inline-flex items-center justify-between gap-4 rounded-none bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 px-4 md:px-5 py-4 transition-all duration-300 cursor-pointer"
 						>
 							<div className="text-left">
 								<span className="text-white/50 text-xs uppercase tracking-[0.3em] block mb-1">Propriétaire</span>
 								<span className="text-white text-lg md:text-xl font-light">{car.owner}</span>
 							</div>
-							<div className="w-9 h-9 rounded-full bg-lfp-green/20 backdrop-blur-md bg-zinc-500/10 flex items-center justify-center">
-								<svg className="w-4 h-4 text-lfp-green" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<div className="w-9 h-9 flex items-center justify-center">
+								<svg className="w-4 h-4 text-lfp-amber drop-shadow-md" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 									<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
 								</svg>
 							</div>
@@ -257,9 +257,9 @@ export default function Garage({
 				className="mb-12 md:mb-20 text-center"
 			>
 				<div className="flex items-center justify-center gap-2 md:gap-4 mb-6 md:mb-8">
-					<span className="text-xl md:text-2xl lg:text-3xl font-light">──</span>
+					<span className="text-xl md:text-2xl lg:text-3xl font-light text-white/40">──</span>
 					<h2 className="text-4xl md:text-5xl lg:text-7xl font-landasans text-white tracking-widest">LE GARAGE</h2>
-					<span className="text-xl md:text-2xl lg:text-3xl font-light">──</span>
+					<span className="text-xl md:text-2xl lg:text-3xl font-light text-white/40">──</span>
 				</div>
 				<p className="text-gray-400 text-base md:text-xl">Les bolides du crew</p>
 			</motion.div>
@@ -273,7 +273,7 @@ export default function Garage({
 								animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
 								transition={{ duration: 0.6, delay: patternIndex * 6 * 0.1 }}
 								id={`car-${patternCars[0].id}`}
-								className="relative w-full h-[40vh] md:h-[50vh] rounded-xl md:rounded-2xl overflow-hidden cursor-pointer group"
+								className="relative w-full h-[40vh] md:h-[50vh] rounded-none md:rounded-none overflow-hidden cursor-pointer group"
 								onClick={() => handleSelect(patternCars[0])}
 							>
 								<Image
@@ -287,10 +287,10 @@ export default function Garage({
 								<div className="absolute inset-0 bg-linear-to-t from-black/80 to-transparent" />
 								<div className="absolute bottom-4 left-4 md:bottom-8 md:left-8">
 									<h3 className="text-2xl md:text-4xl font-display text-white mb-1 md:mb-2">{patternCars[0].model}</h3>
-									<p className="text-base md:text-xl text-lfp-green">{patternCars[0].year}</p>
+									<p className="text-base md:text-xl text-lfp-amber">{patternCars[0].year}</p>
 								</div>
-								<div className="absolute top-4 right-4 md:top-6 md:right-6 w-10 h-10 md:w-12 md:h-12 rounded-full bg-lfp-green/20 backdrop-blur-md bg-zinc-500/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-									<svg className="w-5 h-5 md:w-6 md:h-6 text-lfp-green" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+								<div className="absolute top-4 right-4 md:top-6 md:right-6 w-10 h-10 md:w-12 md:h-12 bg-black/60 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+									<svg className="w-5 h-5 md:w-6 md:h-6 text-lfp-amber drop-shadow-md" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 										<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
 									</svg>
 								</div>
@@ -306,7 +306,7 @@ export default function Garage({
 							>
 								{patternCars[1] && (
 									<div
-										className="relative h-[35vh] md:h-[40vh] rounded-xl md:rounded-2xl overflow-hidden cursor-pointer group"
+										className="relative h-[35vh] md:h-[40vh] rounded-none md:rounded-none overflow-hidden cursor-pointer group"
 										id={`car-${patternCars[1].id}`}
 										onClick={() => handleSelect(patternCars[1])}
 									>
@@ -320,10 +320,10 @@ export default function Garage({
 										<div className="absolute inset-0 bg-linear-to-t from-black/80 to-transparent" />
 										<div className="absolute bottom-4 left-4 md:bottom-6 md:left-6">
 											<h3 className="text-xl md:text-3xl font-display text-white mb-1">{patternCars[1].model}</h3>
-											<p className="text-sm md:text-lg text-lfp-green">{patternCars[1].year}</p>
+											<p className="text-sm md:text-lg text-lfp-amber">{patternCars[1].year}</p>
 										</div>
-										<div className="absolute top-4 right-4 md:top-5 md:right-5 w-9 h-9 md:w-10 md:h-10 rounded-full bg-lfp-green/20 backdrop-blur-md bg-zinc-500/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-											<svg className="w-4 h-4 md:w-5 md:h-5 text-lfp-green" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+										<div className="absolute top-4 right-4 md:top-5 md:right-5 w-9 h-9 md:w-10 md:h-10 bg-black/60 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+											<svg className="w-4 h-4 md:w-5 md:h-5 text-lfp-amber drop-shadow-md" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 												<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
 											</svg>
 										</div>
@@ -331,7 +331,7 @@ export default function Garage({
 								)}
 								{patternCars[2] && (
 									<div
-										className="relative h-[35vh] md:h-[40vh] rounded-xl md:rounded-2xl overflow-hidden cursor-pointer group"
+										className="relative h-[35vh] md:h-[40vh] rounded-none md:rounded-none overflow-hidden cursor-pointer group"
 										id={`car-${patternCars[2].id}`}
 										onClick={() => handleSelect(patternCars[2])}
 									>
@@ -345,10 +345,10 @@ export default function Garage({
 										<div className="absolute inset-0 bg-linear-to-t from-black/80 to-transparent" />
 										<div className="absolute bottom-4 left-4 md:bottom-6 md:left-6">
 											<h3 className="text-xl md:text-3xl font-display text-white mb-1">{patternCars[2].model}</h3>
-											<p className="text-sm md:text-lg text-lfp-green">{patternCars[2].year}</p>
+											<p className="text-sm md:text-lg text-lfp-amber">{patternCars[2].year}</p>
 										</div>
-										<div className="absolute top-4 right-4 md:top-5 md:right-5 w-9 h-9 md:w-10 md:h-10 rounded-full bg-lfp-green/20 backdrop-blur-md bg-zinc-500/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-											<svg className="w-4 h-4 md:w-5 md:h-5 text-lfp-green" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+										<div className="absolute top-4 right-4 md:top-5 md:right-5 w-9 h-9 md:w-10 md:h-10 bg-black/60 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+											<svg className="w-4 h-4 md:w-5 md:h-5 text-lfp-amber drop-shadow-md" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 												<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
 											</svg>
 										</div>
@@ -367,7 +367,7 @@ export default function Garage({
 								<div className="space-y-4 md:space-y-6">
 									{patternCars[3] && (
 										<div
-											className="relative h-[30vh] rounded-xl md:rounded-2xl overflow-hidden cursor-pointer group"
+											className="relative h-[30vh] rounded-none md:rounded-none overflow-hidden cursor-pointer group"
 											id={`car-${patternCars[3].id}`}
 											onClick={() => handleSelect(patternCars[3])}
 										>
@@ -381,10 +381,10 @@ export default function Garage({
 											<div className="absolute inset-0 bg-linear-to-t from-black/80 to-transparent" />
 											<div className="absolute bottom-4 left-4 md:bottom-6 md:left-6">
 												<h3 className="text-lg md:text-2xl font-display text-white mb-1">{patternCars[3].model}</h3>
-												<p className="text-sm md:text-lg text-lfp-green">{patternCars[3].year}</p>
+												<p className="text-sm md:text-lg text-lfp-amber">{patternCars[3].year}</p>
 											</div>
-											<div className="absolute top-4 right-4 md:top-5 md:right-5 w-9 h-9 md:w-10 md:h-10 rounded-full bg-lfp-green/20 backdrop-blur-md bg-zinc-500/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-												<svg className="w-4 h-4 md:w-5 md:h-5 text-lfp-green" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+											<div className="absolute top-4 right-4 md:top-5 md:right-5 w-9 h-9 md:w-10 md:h-10 bg-black/60 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+												<svg className="w-4 h-4 md:w-5 md:h-5 text-lfp-amber drop-shadow-md" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 													<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
 												</svg>
 											</div>
@@ -392,7 +392,7 @@ export default function Garage({
 									)}
 									{patternCars[4] && (
 										<div
-											className="relative h-[30vh] rounded-xl md:rounded-2xl overflow-hidden cursor-pointer group"
+											className="relative h-[30vh] rounded-none md:rounded-none overflow-hidden cursor-pointer group"
 											id={`car-${patternCars[4].id}`}
 											onClick={() => handleSelect(patternCars[4])}
 										>
@@ -406,10 +406,10 @@ export default function Garage({
 											<div className="absolute inset-0 bg-linear-to-t from-black/80 to-transparent" />
 											<div className="absolute bottom-4 left-4 md:bottom-6 md:left-6">
 												<h3 className="text-lg md:text-2xl font-display text-white mb-1">{patternCars[4].model}</h3>
-												<p className="text-sm md:text-lg text-lfp-green">{patternCars[4].year}</p>
+												<p className="text-sm md:text-lg text-lfp-amber">{patternCars[4].year}</p>
 											</div>
-											<div className="absolute top-4 right-4 md:top-5 md:right-5 w-9 h-9 md:w-10 md:h-10 rounded-full bg-lfp-green/20 backdrop-blur-md bg-zinc-500/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-												<svg className="w-4 h-4 md:w-5 md:h-5 text-lfp-green" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+											<div className="absolute top-4 right-4 md:top-5 md:right-5 w-9 h-9 md:w-10 md:h-10 bg-black/60 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+												<svg className="w-4 h-4 md:w-5 md:h-5 text-lfp-amber drop-shadow-md" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 													<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
 												</svg>
 											</div>
@@ -418,7 +418,7 @@ export default function Garage({
 								</div>
 								{patternCars[5] && (
 									<div
-										className="relative h-[30vh] md:h-full rounded-xl md:rounded-2xl overflow-hidden cursor-pointer group"
+										className="relative h-[30vh] md:h-full rounded-none md:rounded-none overflow-hidden cursor-pointer group"
 										id={`car-${patternCars[5].id}`}
 										onClick={() => handleSelect(patternCars[5])}
 									>
@@ -432,10 +432,10 @@ export default function Garage({
 										<div className="absolute inset-0 bg-linear-to-t from-black/80 to-transparent" />
 										<div className="absolute bottom-4 left-4 md:bottom-8 md:left-8">
 											<h3 className="text-xl md:text-3xl font-display text-white mb-1 md:mb-2">{patternCars[5].model}</h3>
-											<p className="text-base md:text-xl text-lfp-green">{patternCars[5].year}</p>
+											<p className="text-base md:text-xl text-lfp-amber">{patternCars[5].year}</p>
 										</div>
-										<div className="absolute top-4 right-4 md:top-6 md:right-6 w-10 h-10 md:w-12 md:h-12 rounded-full bg-lfp-green/20 backdrop-blur-md bg-zinc-500/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-											<svg className="w-5 h-5 md:w-6 md:h-6 text-lfp-green" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+										<div className="absolute top-4 right-4 md:top-6 md:right-6 w-10 h-10 md:w-12 md:h-12 bg-black/60 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+											<svg className="w-5 h-5 md:w-6 md:h-6 text-lfp-amber drop-shadow-md" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 												<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
 											</svg>
 										</div>

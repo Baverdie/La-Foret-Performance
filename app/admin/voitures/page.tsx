@@ -357,7 +357,7 @@ function VoituresContent() {
 
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-7xl font-black text-white mb-2">Voitures</h1>
+          <h1 className="text-6xl md:text-7xl font-display tracking-wide text-white mb-2">Voitures</h1>
           <p className="text-gray-400">Gérer les voitures du garage</p>
         </div>
         {canCreate && (
@@ -367,7 +367,7 @@ function VoituresContent() {
               resetForm();
               setShowForm(true);
             }}
-            className="px-4 py-2 bg-white/50 hover:bg-white text-black cursor-pointer font-medium rounded-lg transition-colors flex items-center gap-2"
+            className="px-4 py-2 bg-white text-black hover:bg-gray-200 cursor-pointer font-medium rounded-lg transition-colors flex items-center gap-2"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -547,7 +547,7 @@ function VoituresContent() {
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 px-4 py-3 bg-white/50 hover:bg-white text-black cursor-pointer rounded-lg transition-colors"
+                  className="flex-1 px-4 py-3 bg-white text-black hover:bg-gray-200 cursor-pointer rounded-lg transition-colors"
                 >
                   {editingCar ? 'Enregistrer' : 'Créer'}
                 </button>

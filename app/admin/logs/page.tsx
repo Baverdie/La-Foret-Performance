@@ -147,7 +147,7 @@ function LogsContent() {
     <div>
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-display text-white mb-2">Logs d'activité</h1>
+        <h1 className="text-6xl md:text-7xl font-display tracking-wide text-white mb-2">Logs d'activité</h1>
         <p className="text-gray-400">Historique des actions sur le panel admin</p>
       </div>
 

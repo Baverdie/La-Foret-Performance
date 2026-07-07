@@ -25,7 +25,7 @@ function SortieCard({ event, index, isLeft }: { event: PublicEvent; index: numbe
 			transition={{ duration: 0.6, delay: index * 0.1 }}
 			className={`relative flex w-full ${isLeft ? 'md:justify-start' : 'md:justify-end'} justify-center`}
 		>
-			<div className={`relative w-full md:w-[45%] ${isPast ? 'bg-linear-to-b from-[#1a1a1a] to-[#0f0f0f]' : 'bg-linear-to-b from-[#1a1a1a] to-[#0f0f0f] border border-gray-500/30'} rounded-xl overflow-hidden group`}>
+			<div className={`relative w-full md:w-[45%] ${isPast ? 'bg-linear-to-b from-[#1a1a1a] to-[#0f0f0f]' : 'bg-linear-to-b from-[#1a1a1a] to-[#0f0f0f] border border-gray-500/30'} rounded-none overflow-hidden group`}>
 				{isPast && event.photo && (
 					<div className="relative h-48 overflow-hidden">
 						<Image
@@ -40,17 +40,17 @@ function SortieCard({ event, index, isLeft }: { event: PublicEvent; index: numbe
 				)}
 
 				{!isPast && (
-					<div className="absolute top-4 right-4 bg-lfp-green text-white text-xs font-bold px-3 py-1 rounded-full">
-						À VENIR
+					<div className="absolute top-4 right-4 bg-lfp-amber text-black text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-none">
+						À venir
 					</div>
 				)}
 
 				<div className="p-6">
-					<p className={`text-sm mb-2 ${isPast ? 'text-gray-500' : 'text-lfp-green'}`}>
+					<p className={`text-sm mb-2 ${isPast ? 'text-gray-500' : 'text-lfp-amber'}`}>
 						{formatDate(event.date)}
 					</p>
 
-					<h3 className={`text-2xl font-display mb-2 ${isPast ? 'text-white' : 'text-lfp-green'}`}>
+					<h3 className="text-2xl font-display mb-2 text-white">
 						{event.title}
 					</h3>
 
@@ -68,7 +68,8 @@ function SortieCard({ event, index, isLeft }: { event: PublicEvent; index: numbe
 				</div>
 			</div>
 
-			<div className={`hidden md:block absolute top-8 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full border-4 ${isPast ? 'bg-white border-gray-600' : 'bg-lfp-green border-lfp-green/50 shadow-[0_0_20px_5px_rgba(45,80,22,0.5)]'} z-10`} />
+			{/* Jalon de timeline : un point est un glyphe, il reste rond (règle "carré pour les surfaces, rond pour les glyphes") */}
+			<div className={`hidden md:block absolute top-8 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full border-4 ${isPast ? 'bg-white border-gray-600' : 'bg-lfp-amber border-lfp-amber/50 shadow-[0_0_20px_5px_rgba(255,206,71,0.35)]'} z-10`} />
 		</motion.div>
 	);
 }
@@ -98,9 +99,9 @@ export default function Sorties({ events }: SortiesProps) {
 				className="mb-12 md:mb-20 text-center"
 			>
 				<div className="flex items-center justify-center gap-2 md:gap-4 mb-6 md:mb-8">
-					<span className="text-xl md:text-2xl lg:text-3xl font-light">──</span>
+					<span className="text-xl md:text-2xl lg:text-3xl font-light text-white/40">──</span>
 					<h2 className="text-4xl md:text-5xl lg:text-7xl font-landasans text-white tracking-widest">LES SORTIES</h2>
-					<span className="text-xl md:text-2xl lg:text-3xl font-light">──</span>
+					<span className="text-xl md:text-2xl lg:text-3xl font-light text-white/40">──</span>
 				</div>
 				<p className="text-gray-400 text-base md:text-xl">Les aventures passées et à venir du crew</p>
 			</motion.div>

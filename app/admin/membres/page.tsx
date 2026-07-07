@@ -275,7 +275,7 @@ function MembresContent() {
 
 			<div className="flex items-center justify-between mb-8">
 				<div>
-					<h1 className="text-7xl font-black font-display text-white mb-2">Membres</h1>
+					<h1 className="text-6xl md:text-7xl font-display tracking-wide text-white mb-2">Membres</h1>
 					<p className="text-gray-400">Gérer les membres du crew</p>
 				</div>
 				{canCreate && (

@@ -55,7 +55,7 @@ function DashboardContent() {
 		<div>
 			{/* Header */}
 			<div className="mb-6 md:mb-8">
-				<h1 className="text-4xl md:text-7xl font-black text-white mb-2">Dashboard</h1>
+				<h1 className="text-6xl md:text-7xl font-display tracking-wide text-white mb-2">Dashboard</h1>
 				<p className="text-gray-400 text-sm md:text-base">
 					Bienvenue, <span className="text-lfp-green">{session?.user?.name}</span>
 				</p>
