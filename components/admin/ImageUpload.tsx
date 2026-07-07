@@ -1,6 +1,8 @@
 'use client';
 
 import { useState, useRef, useCallback } from 'react';
+import Cropper from 'react-easy-crop';
+import { getCroppedBlob, type CropArea } from './cropImage';
 
 interface ImageUploadProps {
   value: string | string[];
@@ -8,7 +10,12 @@ interface ImageUploadProps {
   multiple?: boolean;
   folder?: string;
   className?: string;
+  // Ratio de recadrage fixe (ex. 4/5). Si défini, chaque image passe par le recadreur.
+  aspect?: number;
 }
+
+// Largeur de sortie du recadrage (la hauteur découle du ratio).
+const CROP_OUTPUT_WIDTH = 1080;
 
 export default function ImageUpload({
   value,
@@ -16,10 +23,21 @@ export default function ImageUpload({
   multiple = false,
   folder = 'lfp',
   className = '',
+  aspect,
 }: ImageUploadProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // État du recadreur.
+  const [cropQueue, setCropQueue] = useState<File[]>([]);
+  const [cropSrc, setCropSrc] = useState<string | null>(null);
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [cropArea, setCropArea] = useState<CropArea | null>(null);
+  // Images présentes au début de la session de recadrage + urls produites pendant la session.
+  const cropBaseRef = useRef<string[]>([]);
+  const cropResultsRef = useRef<string[]>([]);
 
   const images = multiple
     ? (Array.isArray(value) ? value : value ? [value] : [])
@@ -80,20 +98,29 @@ export default function ImageUpload({
     return data.url;
   };
 
-  const handleFiles = useCallback(async (files: FileList) => {
-    const validFiles = Array.from(files).filter(file =>
-      file.type.startsWith('image/')
-    );
+  // Lit un fichier en data URL (pour l'afficher dans le recadreur).
+  const fileToDataUrl = (file: File): Promise<string> =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
 
-    if (validFiles.length === 0) return;
+  // Charge l'image suivante dans le recadreur (réinitialise position/zoom).
+  const loadCropSrc = async (file: File) => {
+    const src = await fileToDataUrl(file);
+    setCrop({ x: 0, y: 0 });
+    setZoom(1);
+    setCropArea(null);
+    setCropSrc(src);
+  };
 
+  // Upload direct (sans recadrage) — comportement par défaut quand aucun ratio n'est imposé.
+  const uploadDirect = async (files: File[]) => {
     setIsUploading(true);
-
     try {
-      const uploadPromises = validFiles.map((file) => uploadFile(file));
-
-      const urls = await Promise.all(uploadPromises);
-
+      const urls = await Promise.all(files.map((file) => uploadFile(file)));
       if (multiple) {
         onChange([...images, ...urls]);
       } else {
@@ -105,7 +132,60 @@ export default function ImageUpload({
     } finally {
       setIsUploading(false);
     }
-  }, [images, multiple, folder, onChange]);
+  };
+
+  const handleFiles = useCallback(
+    async (files: FileList) => {
+      const validFiles = Array.from(files).filter((file) => file.type.startsWith('image/'));
+      if (validFiles.length === 0) return;
+
+      if (aspect) {
+        // Recadrage imposé : on traite les fichiers un par un dans le recadreur.
+        cropBaseRef.current = images;
+        cropResultsRef.current = [];
+        setCropQueue(validFiles);
+        await loadCropSrc(validFiles[0]);
+      } else {
+        await uploadDirect(validFiles);
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [images, multiple, folder, onChange, aspect]
+  );
+
+  // Recadre l'image courante, l'uploade, puis passe à la suivante de la file.
+  const confirmCrop = async () => {
+    if (!cropSrc || !cropArea || !aspect) return;
+    setIsUploading(true);
+    try {
+      const outHeight = Math.round(CROP_OUTPUT_WIDTH / aspect);
+      const blob = await getCroppedBlob(cropSrc, cropArea, CROP_OUTPUT_WIDTH, outHeight);
+      const file = new File([blob], `crop-${cropResultsRef.current.length}.jpg`, { type: 'image/jpeg' });
+      const url = await uploadFile(file);
+      cropResultsRef.current = [...cropResultsRef.current, url];
+      onChange(multiple ? [...cropBaseRef.current, ...cropResultsRef.current] : url);
+    } catch (error) {
+      console.error('Crop/upload error:', error);
+      alert('Erreur lors du recadrage');
+    } finally {
+      setIsUploading(false);
+    }
+
+    const rest = cropQueue.slice(1);
+    setCropQueue(rest);
+    if (rest.length > 0) {
+      await loadCropSrc(rest[0]);
+    } else {
+      setCropSrc(null);
+    }
+  };
+
+  // Annule le recadrage en cours et vide la file.
+  const cancelCrop = () => {
+    setCropQueue([]);
+    setCropSrc(null);
+    setCropArea(null);
+  };
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -237,7 +317,8 @@ export default function ImageUpload({
           {images.map((url, index) => (
             <div
               key={url + index}
-              className="relative group rounded-lg overflow-hidden bg-black aspect-video"
+              className="relative group rounded-lg overflow-hidden bg-black"
+              style={{ aspectRatio: aspect ?? 16 / 9 }}
             >
               <img
                 src={url}
@@ -289,6 +370,54 @@ export default function ImageUpload({
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {/* Recadreur à ratio fixe */}
+      {cropSrc && aspect && (
+        <div className="fixed inset-0 bg-black/90 z-60 flex flex-col items-center justify-center p-4">
+          <p className="text-white/70 text-sm mb-3">Recadrer l&apos;image — glisser pour positionner, molette/zoom pour ajuster</p>
+          <div className="relative w-full max-w-sm h-[55vh] bg-black">
+            <Cropper
+              image={cropSrc}
+              crop={crop}
+              zoom={zoom}
+              aspect={aspect}
+              onCropChange={setCrop}
+              onZoomChange={setZoom}
+              onCropComplete={(_, areaPixels) => setCropArea(areaPixels)}
+              objectFit="contain"
+            />
+          </div>
+          <div className="w-full max-w-sm mt-4 flex items-center gap-3">
+            <span className="text-white/50 text-xs uppercase tracking-wider">Zoom</span>
+            <input
+              type="range"
+              min={1}
+              max={3}
+              step={0.01}
+              value={zoom}
+              onChange={(e) => setZoom(Number(e.target.value))}
+              className="flex-1 accent-lfp-green"
+            />
+          </div>
+          <div className="w-full max-w-sm mt-4 flex gap-3">
+            <button
+              type="button"
+              onClick={cancelCrop}
+              className="flex-1 px-4 py-2.5 border border-white/15 text-gray-300 hover:border-white hover:text-white rounded-lg transition-colors cursor-pointer"
+            >
+              Annuler
+            </button>
+            <button
+              type="button"
+              onClick={confirmCrop}
+              disabled={isUploading || !cropArea}
+              className="flex-1 px-4 py-2.5 bg-white text-black font-medium rounded-lg hover:bg-gray-200 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isUploading ? 'Upload…' : cropQueue.length > 1 ? `Valider (${cropQueue.length} restantes)` : 'Valider'}
+            </button>
+          </div>
         </div>
       )}
     </div>

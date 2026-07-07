@@ -10,6 +10,7 @@
     "postinstall": "prisma generate",
     "db:push": "prisma db push",
     "db:seed": "npx tsx prisma/seed.ts",
+    "db:seed-shop": "npx tsx scripts/seed-shop.ts",
     "db:studio": "prisma studio",
     "migrate:blob": "npx tsx scripts/migrate-to-blob.ts",
     "update:urls": "npx tsx scripts/update-db-urls.ts"
@@ -29,7 +30,9 @@
     "prisma": "^6.19.2",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
-    "react-intersection-observer": "^9.8.0"
+    "react-easy-crop": "^6.0.2",
+    "react-intersection-observer": "^9.8.0",
+    "stripe": "^22.2.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

@@ -27,7 +27,7 @@ export async function checkAuth(requiredPermission?: Permission) {
 export async function logAction(
   userId: string,
   action: 'CREATE' | 'UPDATE' | 'DELETE' | 'SUSPEND' | 'REACTIVATE' | 'LOGIN' | 'LOGOUT',
-  entity: 'MEMBER' | 'CAR' | 'EVENT' | 'USER',
+  entity: 'MEMBER' | 'CAR' | 'EVENT' | 'USER' | 'PRODUCT' | 'ORDER' | 'CAMPAIGN',
   entityId?: string,
   details?: object,
   request?: Request

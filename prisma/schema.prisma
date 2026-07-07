@@ -132,3 +132,97 @@ model Event {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
+
+// Produit de la boutique (textile, autocollant, cache-plaque, etc.)
+// Prix en centimes. La disponibilite est pilotee par isActive + availabilityMode + campagne.
+model Product {
+  id               String           @id @default(auto()) @map("_id") @db.ObjectId
+  name             String
+  slug             String           @unique
+  description      String
+  details          String[] @default([]) // specs (une par ligne) : matière, technique, coupe…
+  category         String // TEXTILE | STICKER | PLATE | OTHER
+  images           String[]
+  basePrice        Int // centimes
+  weightGrams      Int? // pour les frais de port futurs
+  availabilityMode String           @default("MADE_TO_ORDER") // MADE_TO_ORDER | PRECOMMANDE
+  campaignId       String?          @db.ObjectId
+  campaign         Campaign?        @relation(fields: [campaignId], references: [id])
+  hasVariants      Boolean          @default(false)
+  isActive         Boolean          @default(true)
+  order            Int              @default(0)
+  variants         ProductVariant[]
+  orderItems       OrderItem[]
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+}
+
+// Variante d'un produit (taille, couleur). Pas de stock dormant : stockLimit optionnel pour les drops limites.
+model ProductVariant {
+  id         String  @id @default(auto()) @map("_id") @db.ObjectId
+  productId  String  @db.ObjectId
+  product    Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  label      String // libelle d'affichage (auto: "Couleur / Taille")
+  size       String? // ex. "M", "L", "XL"
+  color      String? // ex. "Noir", "Sable"
+  sku        String?
+  priceDelta Int     @default(0) // centimes, ajout sur le prix de base
+  stockLimit Int? // null = illimite
+  isActive   Boolean @default(true)
+  order      Int     @default(0)
+}
+
+// Campagne de precommande (vague de production)
+model Campaign {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String
+  startDate   DateTime
+  endDate     DateTime
+  status      String    @default("DRAFT") // DRAFT | OPEN | CLOSED | IN_PRODUCTION | COMPLETED
+  products    Product[]
+  orders      Order[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+// Commande client (checkout invite). Montants en centimes.
+model Order {
+  id                    String      @id @default(auto()) @map("_id") @db.ObjectId
+  orderNumber           String      @unique
+  email                 String
+  firstName             String
+  lastName              String
+  phone                 String?
+  addressLine1          String
+  addressLine2          String?
+  city                  String
+  postalCode            String
+  country               String      @default("FR")
+  subtotal              Int
+  shippingCost          Int
+  total                 Int
+  status                String      @default("PENDING") // PENDING | PAID | IN_PRODUCTION | SHIPPED | DELIVERED | CANCELLED | REFUNDED
+  stripeSessionId       String?     @unique
+  stripePaymentIntentId String?
+  campaignId            String?     @db.ObjectId
+  campaign              Campaign?   @relation(fields: [campaignId], references: [id])
+  items                 OrderItem[]
+  createdAt             DateTime    @default(now())
+  updatedAt             DateTime    @updatedAt
+}
+
+// Ligne de commande avec snapshots (la commande reste lisible si le produit change ensuite).
+model OrderItem {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  orderId      String   @db.ObjectId
+  order        Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId    String   @db.ObjectId
+  product      Product  @relation(fields: [productId], references: [id])
+  variantId    String?  @db.ObjectId
+  productName  String
+  variantLabel String?
+  unitPrice    Int
+  quantity     Int
+  lineTotal    Int
+}

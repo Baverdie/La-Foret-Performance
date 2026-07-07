@@ -25,6 +25,19 @@ export const PERMISSIONS = {
   LOGS_VIEW: 'LOGS_VIEW',
 
   SETTINGS_EDIT: 'SETTINGS_EDIT',
+
+  PRODUCTS_VIEW: 'PRODUCTS_VIEW',
+  PRODUCTS_CREATE: 'PRODUCTS_CREATE',
+  PRODUCTS_EDIT: 'PRODUCTS_EDIT',
+  PRODUCTS_DELETE: 'PRODUCTS_DELETE',
+
+  ORDERS_VIEW: 'ORDERS_VIEW',
+  ORDERS_EDIT: 'ORDERS_EDIT',
+
+  CAMPAIGNS_VIEW: 'CAMPAIGNS_VIEW',
+  CAMPAIGNS_CREATE: 'CAMPAIGNS_CREATE',
+  CAMPAIGNS_EDIT: 'CAMPAIGNS_EDIT',
+  CAMPAIGNS_DELETE: 'CAMPAIGNS_DELETE',
 } as const;
 
 export type Permission = (typeof PERMISSIONS)[keyof typeof PERMISSIONS];
@@ -44,6 +57,14 @@ export const ROLE_PERMISSIONS = {
     PERMISSIONS.EVENTS_EDIT,
     PERMISSIONS.PHOTOS_UPLOAD,
     PERMISSIONS.LOGS_VIEW,
+    PERMISSIONS.PRODUCTS_VIEW,
+    PERMISSIONS.PRODUCTS_CREATE,
+    PERMISSIONS.PRODUCTS_EDIT,
+    PERMISSIONS.ORDERS_VIEW,
+    PERMISSIONS.ORDERS_EDIT,
+    PERMISSIONS.CAMPAIGNS_VIEW,
+    PERMISSIONS.CAMPAIGNS_CREATE,
+    PERMISSIONS.CAMPAIGNS_EDIT,
   ],
 
   editor: [
@@ -54,12 +75,19 @@ export const ROLE_PERMISSIONS = {
     PERMISSIONS.EVENTS_VIEW,
     PERMISSIONS.EVENTS_EDIT,
     PERMISSIONS.PHOTOS_UPLOAD,
+    PERMISSIONS.PRODUCTS_VIEW,
+    PERMISSIONS.PRODUCTS_EDIT,
+    PERMISSIONS.ORDERS_VIEW,
+    PERMISSIONS.CAMPAIGNS_VIEW,
   ],
 
   viewer: [
     PERMISSIONS.MEMBERS_VIEW,
     PERMISSIONS.CARS_VIEW,
     PERMISSIONS.EVENTS_VIEW,
+    PERMISSIONS.PRODUCTS_VIEW,
+    PERMISSIONS.ORDERS_VIEW,
+    PERMISSIONS.CAMPAIGNS_VIEW,
   ],
 } as const;
 
@@ -103,6 +131,18 @@ export const PERMISSION_GROUPS = {
     { key: PERMISSIONS.USERS_CREATE, label: 'Créer des utilisateurs' },
     { key: PERMISSIONS.USERS_EDIT, label: 'Modifier les utilisateurs' },
     { key: PERMISSIONS.USERS_DELETE, label: 'Supprimer des utilisateurs' },
+  ],
+  Boutique: [
+    { key: PERMISSIONS.PRODUCTS_VIEW, label: 'Voir les produits' },
+    { key: PERMISSIONS.PRODUCTS_CREATE, label: 'Créer des produits' },
+    { key: PERMISSIONS.PRODUCTS_EDIT, label: 'Modifier les produits' },
+    { key: PERMISSIONS.PRODUCTS_DELETE, label: 'Supprimer des produits' },
+    { key: PERMISSIONS.ORDERS_VIEW, label: 'Voir les commandes' },
+    { key: PERMISSIONS.ORDERS_EDIT, label: 'Gérer les commandes' },
+    { key: PERMISSIONS.CAMPAIGNS_VIEW, label: 'Voir les précommandes' },
+    { key: PERMISSIONS.CAMPAIGNS_CREATE, label: 'Créer des précommandes' },
+    { key: PERMISSIONS.CAMPAIGNS_EDIT, label: 'Modifier les précommandes' },
+    { key: PERMISSIONS.CAMPAIGNS_DELETE, label: 'Supprimer des précommandes' },
   ],
   Système: [
     { key: PERMISSIONS.LOGS_VIEW, label: 'Voir les logs' },
