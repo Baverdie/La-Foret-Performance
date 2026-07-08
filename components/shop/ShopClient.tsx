@@ -71,7 +71,7 @@ export default function ShopClient({ products, campaigns }: ShopClientProps) {
   return (
     <main className="max-w-7xl mx-auto px-6 md:px-12 py-16 md:py-24">
       {/* En-tete */}
-      <SectionHeading title="LA BOUTIQUE" subtitle="Le merch officiel du crew" />
+      <SectionHeading title="LA BOUTIQUE" subtitle="Le merch du crew" />
 
       {/* Précommande active — ligne sobre, nom souligné ambre (direction C) */}
       {campaigns.length > 0 && (
@@ -82,10 +82,10 @@ export default function ShopClient({ products, campaigns }: ShopClientProps) {
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, ease: 'easeOut', delay: index * 0.1 }}
-              className="flex flex-wrap items-center justify-between gap-3 py-4"
+              className="flex flex-col items-center gap-1.5 text-center sm:flex-row sm:items-center sm:justify-between sm:text-left py-4"
             >
-              <div className="flex items-center gap-3 flex-wrap">
-                <span className="text-[11px] uppercase tracking-[0.3em] text-white/50 font-display">
+              <div className="flex items-baseline justify-center gap-3">
+                <span className="text-[11px] uppercase tracking-[0.3em] text-white/50 font-display shrink-0">
                   Précommande
                 </span>
                 <span className="text-white/20">/</span>
@@ -99,23 +99,44 @@ export default function ShopClient({ products, campaigns }: ShopClientProps) {
         </div>
       )}
 
-      {/* Filtres — onglets centrés soulignés (Tout · Précommande · catégories) */}
+      {/* Filtres — bande défilante pleine largeur en mobile, onglets centrés dès sm.
+          Structure à deux couches : le conteneur overflow-x clippe son contenu,
+          la page ne peut donc jamais déborder horizontalement. */}
       {filters.length > 2 && (
-        <div className="flex flex-wrap justify-center gap-6 md:gap-8 mb-12 text-sm uppercase tracking-[0.2em]">
-          {filters.map((key) => (
-            <button
-              key={key}
-              onClick={() => setActiveFilter(key)}
-              className={`pb-1 border-b-2 transition-colors cursor-pointer ${
-                activeFilter === key
-                  ? 'border-lfp-amber text-white'
-                  : 'border-transparent text-white/40 hover:text-white'
-              }`}
-            >
-              {filterLabel(key)}
-            </button>
-          ))}
-        </div>
+        <>
+          <div className="sm:hidden mb-12 -mx-6 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <div className="flex w-max gap-6 px-6 text-sm uppercase tracking-[0.2em]">
+              {filters.map((key) => (
+                <button
+                  key={key}
+                  onClick={() => setActiveFilter(key)}
+                  className={`pb-1 border-b-2 transition-colors cursor-pointer shrink-0 whitespace-nowrap ${
+                    activeFilter === key
+                      ? 'border-lfp-amber text-white'
+                      : 'border-transparent text-white/40'
+                  }`}
+                >
+                  {filterLabel(key)}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="hidden sm:flex flex-wrap justify-center gap-6 md:gap-8 mb-12 text-sm uppercase tracking-[0.2em]">
+            {filters.map((key) => (
+              <button
+                key={key}
+                onClick={() => setActiveFilter(key)}
+                className={`pb-1 border-b-2 transition-colors cursor-pointer ${
+                  activeFilter === key
+                    ? 'border-lfp-amber text-white'
+                    : 'border-transparent text-white/40 hover:text-white'
+                }`}
+              >
+                {filterLabel(key)}
+              </button>
+            ))}
+          </div>
+        </>
       )}
 
       {/* Grille produits — flux unique, drops en premier */}

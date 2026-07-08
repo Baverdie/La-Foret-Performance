@@ -128,7 +128,7 @@ function PanierContent() {
 export default function PanierPage() {
   return (
     <main className="max-w-6xl mx-auto px-6 md:px-12 py-12">
-      <h1 className="text-3xl md:text-4xl font-display tracking-wider text-white mb-8">Votre panier</h1>
+      <h1 className="text-3xl md:text-4xl font-display tracking-wider uppercase text-white mb-8">Votre panier</h1>
       <Suspense fallback={<div className="py-24 text-center text-white/30">Chargement…</div>}>
         <PanierContent />
       </Suspense>

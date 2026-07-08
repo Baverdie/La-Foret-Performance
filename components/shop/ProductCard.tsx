@@ -43,12 +43,13 @@ export default function ProductCard({ product, index }: { product: PublicProduct
             </span>
           )}
         </div>
-        <div className="mt-4 flex items-baseline justify-between gap-3 border-t border-white/10 pt-3">
+        {/* Légende : empilée en mobile (cartes étroites), catégorie/nom + prix en ligne dès sm */}
+        <div className="mt-4 flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-3 border-t border-white/10 pt-3">
           <div className="min-w-0">
             <p className="text-[10px] text-white/40 uppercase tracking-[0.3em]">
               {CATEGORY_LABELS[product.category] || product.category}
             </p>
-            <h3 className="text-base uppercase tracking-wide text-white mt-1 truncate">{product.name}</h3>
+            <h3 className="text-sm sm:text-base uppercase tracking-wide text-white mt-1 line-clamp-2">{product.name}</h3>
           </div>
           <span className="text-sm text-white whitespace-nowrap">{formatEuros(product.basePrice)}</span>
         </div>

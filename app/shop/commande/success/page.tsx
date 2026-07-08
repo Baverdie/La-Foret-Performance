@@ -20,7 +20,7 @@ export default function SuccessPage() {
           <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
         </svg>
       </div>
-      <h1 className="text-3xl md:text-4xl font-display tracking-wider text-white">Merci pour ta commande !</h1>
+      <h1 className="text-3xl md:text-4xl font-display tracking-wider uppercase text-white">Merci pour ta commande !</h1>
       <p className="text-white/50 text-sm mt-4 leading-relaxed">
         Ton paiement a bien été reçu. Un email de confirmation vient de t'être envoyé avec le récapitulatif de ta
         commande. On te préviendra dès qu'elle sera expédiée.

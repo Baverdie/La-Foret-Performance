@@ -15,7 +15,7 @@ export default function SectionHeading({ title, subtitle }: { title: string; sub
     >
       <div className="flex items-center justify-center gap-4 text-white/40 mb-3">
         <span>──</span>
-        {subtitle && <span className="uppercase tracking-[0.4em] text-xs font-display">{subtitle}</span>}
+        {subtitle && <span className="uppercase tracking-[0.4em] text-xs font-display whitespace-nowrap">{subtitle}</span>}
         <span>──</span>
       </div>
       <h1 className="text-5xl md:text-7xl font-display tracking-widest uppercase text-white">{title}</h1>

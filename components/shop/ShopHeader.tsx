@@ -24,10 +24,12 @@ export default function ShopHeader() {
               className="object-cover"
             />
           </div>
-          <span className="text-white font-display tracking-[0.18em] text-sm md:text-base">LA FORÊT PERFORMANCE</span>
+          {/* Wordmark complet dès sm ; abrégé LFP en dessous (évite le header sur deux lignes) */}
+          <span className="hidden sm:block text-white font-display tracking-[0.18em] text-sm md:text-base">LA FORÊT PERFORMANCE</span>
+          <span className="sm:hidden text-white font-display tracking-[0.25em] text-base">LFP</span>
         </Link>
 
-        <nav className="flex items-center gap-6 md:gap-8 text-xs uppercase tracking-[0.2em]">
+        <nav className="flex items-center gap-5 md:gap-8 text-xs uppercase tracking-[0.2em] whitespace-nowrap">
           <Link href="/" className="text-gray-400 hover:text-white transition-colors">
             Le site
           </Link>

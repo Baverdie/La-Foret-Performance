@@ -139,7 +139,7 @@ export default function CheckoutPage() {
 
   return (
     <main className="max-w-5xl mx-auto px-6 md:px-12 py-12">
-      <h1 className="text-3xl md:text-4xl font-display tracking-wider text-white mb-8">Commande</h1>
+      <h1 className="text-3xl md:text-4xl font-display tracking-wider uppercase text-white mb-8">Commande</h1>
 
       <form onSubmit={handleSubmit} className="grid lg:grid-cols-3 gap-10">
         {/* Coordonnees */}
