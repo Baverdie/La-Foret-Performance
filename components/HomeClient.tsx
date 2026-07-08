@@ -111,7 +111,7 @@ export default function HomeClient({ members, cars, events }: HomeClientProps) {
 
   return (
     <div ref={mainRef} className="relative">
-      <Hero />
+      <Hero hasCrew={members.length > 0} hasGarage={cars.length > 0} hasSorties={events.length > 0} />
       {members.length > 0 && (
         <Crew
           members={members}
@@ -131,7 +131,7 @@ export default function HomeClient({ members, cars, events }: HomeClientProps) {
         />
       )}
       {events.length > 0 && <Sorties events={events} />}
-      <Footer />
+      <Footer hasCrew={members.length > 0} hasGarage={cars.length > 0} hasSorties={events.length > 0} />
     </div>
   );
 }

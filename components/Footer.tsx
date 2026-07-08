@@ -3,19 +3,18 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 
-// Liens d'ancrage vers les sections de la landing.
-const NAV_LINKS = [
-	{ label: 'Accueil', href: '#hero' },
-	{ label: 'Le Crew', href: '#crew' },
-	{ label: 'Le Garage', href: '#garage' },
-	{ label: 'Les Sorties', href: '#sorties' },
-];
-
 // Liens vers la boutique.
 const SHOP_LINKS = [
 	{ label: 'La Boutique', href: '/shop' },
 	{ label: 'Panier', href: '/shop/panier' },
 ];
+
+interface FooterProps {
+	// Présence des sections conditionnelles : les ancres mortes sont masquées.
+	hasCrew: boolean;
+	hasGarage: boolean;
+	hasSorties: boolean;
+}
 
 // Colonne de liens du footer : label en capitales espacées + liste sobre.
 function FooterColumn({ title, links }: { title: string; links: { label: string; href: string }[] }) {
@@ -37,10 +36,18 @@ function FooterColumn({ title, links }: { title: string; links: { label: string;
 	);
 }
 
-// Footer éditorial : wordmark géant signature, rangées structurées par filets 1px,
+// Footer éditorial : lockup de marque centré, rangées structurées par filets 1px,
 // liens en capitales espacées, Instagram en lien texte sobre.
-export default function Footer() {
+export default function Footer({ hasCrew, hasGarage, hasSorties }: FooterProps) {
 	const currentYear = new Date().getFullYear();
+
+	// Ancres de la landing : seules les sections réellement rendues apparaissent.
+	const navLinks = [
+		{ label: 'Accueil', href: '#hero', show: true },
+		{ label: 'Le Crew', href: '#crew', show: hasCrew },
+		{ label: 'Le Garage', href: '#garage', show: hasGarage },
+		{ label: 'Les Sorties', href: '#sorties', show: hasSorties },
+	].filter((link) => link.show);
 
 	return (
 		<footer className="grain-bg relative bg-[#1a1a1a] overflow-hidden border-t border-white/10">
@@ -78,7 +85,7 @@ export default function Footer() {
 					transition={{ duration: 0.6, delay: 0.1 }}
 					className="grid grid-cols-2 md:grid-cols-3 gap-10 border-t border-white/10 py-10 md:py-12"
 				>
-					<FooterColumn title="Navigation" links={NAV_LINKS} />
+					<FooterColumn title="Navigation" links={navLinks} />
 					<FooterColumn title="Boutique" links={SHOP_LINKS} />
 					<div>
 						<p className="text-white/40 text-xs uppercase tracking-[0.3em] mb-5 font-display">Suivez-nous</p>

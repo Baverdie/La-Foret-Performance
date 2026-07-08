@@ -4,16 +4,24 @@ import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
 
-// Liens du menu mobile (ancres de la landing + boutique).
-const MENU_LINKS = [
-	{ label: 'Accueil', href: '#hero' },
-	{ label: 'Le Crew', href: '#crew' },
-	{ label: 'Le Garage', href: '#garage' },
-	{ label: 'Les Sorties', href: '#sorties' },
-	{ label: 'La Boutique', href: '/shop' },
-];
+interface HeroProps {
+	// Présence des sections conditionnelles : pilote les entrées du menu mobile.
+	hasCrew: boolean;
+	hasGarage: boolean;
+	hasSorties: boolean;
+}
 
-export default function Hero() {
+export default function Hero({ hasCrew, hasGarage, hasSorties }: HeroProps) {
+	// Liens du menu mobile : seules les sections réellement rendues apparaissent,
+	// la numérotation (01, 02…) suit l'ordre après filtrage.
+	const menuLinks = [
+		{ label: 'Accueil', href: '#hero', show: true },
+		{ label: 'Le Crew', href: '#crew', show: hasCrew },
+		{ label: 'Le Garage', href: '#garage', show: hasGarage },
+		{ label: 'Les Sorties', href: '#sorties', show: hasSorties },
+		{ label: 'La Boutique', href: '/shop', show: true },
+	].filter((link) => link.show);
+
 	const [displayText, setDisplayText] = useState('');
 	const [isTypingComplete, setIsTypingComplete] = useState(false);
 	const [showBackground, setShowBackground] = useState(false);
@@ -132,6 +140,9 @@ export default function Hero() {
 				className="md:hidden fixed top-0 left-0 right-0 bg-black/90 backdrop-blur-md border-b border-white/10 z-90"
 				style={{
 					paddingTop: 'max(env(safe-area-inset-top), 0px)',
+					// Menu ouvert : la navbar passe au-dessus de l'overlay (z-150) pour que
+					// le bouton, devenu croix, reste visible et cliquable au même endroit.
+					zIndex: menuOpen ? 160 : undefined,
 				}}
 			>
 				<div className="flex items-center justify-between px-6 py-4">
@@ -145,34 +156,28 @@ export default function Hero() {
 						/>
 					</div>
 
+					{/* Bouton menu : unique (il se transforme en croix, même position → pas de
+					    « ghost click » iOS possible), pointerup + click dédupliqués par toggleMenu. */}
+					<button
+						onPointerUp={toggleMenu}
+						onClick={toggleMenu}
+						aria-label={menuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
+						type="button"
+						className="w-11 h-11 flex items-center justify-center cursor-pointer"
+					>
+						{menuOpen ? (
+							<svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+								<path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+							</svg>
+						) : (
+							<span className="flex flex-col items-end gap-1.5 w-6">
+								<span className="block h-px w-6 bg-white" />
+								<span className="block h-px w-4 bg-white" />
+							</span>
+						)}
+					</button>
 				</div>
 			</motion.nav>
-
-			{/* Bouton menu : élément fixe indépendant (hors de la nav blurée — le backdrop-filter
-			    peut casser le hit-testing des enfants sur iOS), au-dessus de tout (z-160 > overlay),
-			    qui se transforme en croix. Écoute pointerup ET click (dédupliqués par toggleMenu). */}
-			<motion.button
-				initial={{ opacity: 0 }}
-				animate={{ opacity: showNav ? 1 : 0 }}
-				transition={{ duration: 0.6, ease: 'easeOut' }}
-				onPointerUp={toggleMenu}
-				onClick={toggleMenu}
-				aria-label={menuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
-				type="button"
-				className="md:hidden fixed right-4 z-160 w-11 h-11 flex items-center justify-center cursor-pointer"
-				style={{ top: 'calc(max(env(safe-area-inset-top), 0px) + 12px)' }}
-			>
-				{menuOpen ? (
-					<svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-						<path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-					</svg>
-				) : (
-					<span className="flex flex-col items-end gap-1.5 w-6">
-						<span className="block h-px w-6 bg-white" />
-						<span className="block h-px w-4 bg-white" />
-					</span>
-				)}
-			</motion.button>
 
 			{/* Menu mobile plein écran */}
 			<AnimatePresence>
@@ -183,24 +188,11 @@ export default function Hero() {
 						exit={{ opacity: 0 }}
 						transition={{ duration: 0.25 }}
 						className="md:hidden fixed inset-0 z-150 bg-[#0a0a0a] flex flex-col"
-						style={{ paddingTop: 'max(env(safe-area-inset-top), 0px)' }}
+						style={{ paddingTop: 'calc(max(env(safe-area-inset-top), 0px) + 72px)' }}
 					>
-						{/* Barre haute : logo (la fermeture = le bouton flottant qui devient croix) */}
-						<div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
-							<div className="w-10 h-10 rounded-none border border-white/15 flex items-center justify-center">
-								<Image
-									src="https://oh7qghmltywp4luq.public.blob.vercel-storage.com/lfp/logo-lfp.jpg"
-									alt="LFP"
-									width={36}
-									height={36}
-									className="object-cover"
-								/>
-							</div>
-						</div>
-
-						{/* Liens numérotés */}
+						{/* Liens numérotés (le haut est occupé par la vraie navbar, passée au-dessus) */}
 						<nav className="flex-1 flex flex-col justify-center gap-7 px-8">
-							{MENU_LINKS.map((link, index) => (
+							{menuLinks.map((link, index) => (
 								<motion.a
 									key={link.href}
 									href={link.href}
