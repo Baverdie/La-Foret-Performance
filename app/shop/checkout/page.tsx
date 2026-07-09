@@ -220,6 +220,13 @@ export default function CheckoutPage() {
               {submitting ? 'Redirection…' : 'Payer'}
             </button>
             <p className="text-white/30 text-[11px] text-center mt-3">Paiement sécurisé par Stripe</p>
+            <p className="text-white/30 text-[11px] text-center mt-2">
+              En validant votre commande, vous acceptez nos{' '}
+              <Link href="/cgv" className="underline underline-offset-2 hover:text-white transition-colors">
+                conditions générales de vente
+              </Link>
+              .
+            </p>
           </div>
         </div>
       </form>

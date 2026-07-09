@@ -111,6 +111,13 @@ export default function Footer({ hasCrew, hasGarage, hasSorties }: FooterProps) 
 						<span className="w-1.5 h-1.5 rounded-full bg-lfp-amber inline-block" />
 						Charente-Maritime, France
 					</p>
+					<nav className="flex items-center gap-4 text-gray-500 text-xs uppercase tracking-[0.15em]">
+						<a href="/cgv" className="hover:text-white transition-colors">CGV</a>
+						<span className="text-white/15">·</span>
+						<a href="/mentions-legales" className="hover:text-white transition-colors">Mentions légales</a>
+						<span className="text-white/15">·</span>
+						<a href="/confidentialite" className="hover:text-white transition-colors">Confidentialité</a>
+					</nav>
 					<p className="text-gray-500 text-xs">
 						© {currentYear} La Forêt Performance · Développé par{' '}
 						<a
