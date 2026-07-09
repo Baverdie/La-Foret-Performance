@@ -106,7 +106,7 @@ export default function AdminSidebar() {
 						alt="LFP"
 						width={40}
 						height={40}
-						className="rounded-full object-cover border border-white/20"
+						className="rounded-none object-cover border border-white/20"
 					/>
 					<div>
 						<h1 className="text-white font-medium">Admin Panel</h1>
@@ -124,7 +124,7 @@ export default function AdminSidebar() {
 						<Link
 						key={item.href}
 						href={item.href}
-						className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${isActive
+						className={`flex items-center gap-3 px-4 py-3 rounded-none transition-all duration-200 ${isActive
 							? 'bg-white/20 text-white'
 							: 'text-gray-400 hover:text-white hover:bg-white/5'
 							}`}
@@ -140,7 +140,7 @@ export default function AdminSidebar() {
 			<div className="p-4 border-t border-white/10">
 				<div className="flex items-center gap-3 mb-4">
 					{session?.user?.memberPhoto ? (
-						<div className="relative w-10 h-10 rounded-full overflow-hidden">
+						<div className="relative w-10 h-10 rounded-none overflow-hidden">
 							<Image
 								src={session.user.memberPhoto}
 								alt={session.user.name || 'Photo membre'}
@@ -150,7 +150,7 @@ export default function AdminSidebar() {
 							/>
 						</div>
 					) : (
-						<div className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center">
+						<div className="w-10 h-10 bg-white/10 rounded-none flex items-center justify-center">
 							<span className="text-sm text-white font-medium">
 								{session?.user?.name?.charAt(0).toUpperCase() || 'U'}
 							</span>
@@ -163,7 +163,7 @@ export default function AdminSidebar() {
 				</div>
 				<button
 					onClick={() => signOut({ callbackUrl: '/admin/login' })}
-					className="w-full flex items-center justify-start gap-2 px-4 py-2 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-all duration-200 ease-in-out cursor-pointer"
+					className="w-full flex items-center justify-start gap-2 px-4 py-2 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-none transition-all duration-200 ease-in-out cursor-pointer"
 					>
 						<svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 							<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />

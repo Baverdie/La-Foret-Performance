@@ -34,19 +34,19 @@ function ConfirmModal({ isOpen, title, message, confirmText = 'Confirmer', cance
 
 	return (
 		<div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-			<div className="bg-[#141414] border border-white/10 rounded-xl p-6 w-full max-w-md">
+			<div className="bg-[#141414] border border-white/10 rounded-none p-6 w-full max-w-md">
 				<h3 className="text-xl font-display text-white mb-2">{title}</h3>
 				<p className="text-gray-400 mb-6 whitespace-pre-line">{message}</p>
 				<div className="flex gap-3">
 					<button
 						onClick={onCancel}
-						className="flex-1 px-4 py-2 border border-white/20 text-white rounded-lg hover:bg-white/10 transition-colors"
+						className="flex-1 px-4 py-2 border border-white/20 text-white rounded-none hover:bg-white/10 transition-colors"
 					>
 						{cancelText}
 					</button>
 					<button
 						onClick={onConfirm}
-						className={`flex-1 px-4 py-2 rounded-lg transition-colors ${danger ? 'bg-red-500 hover:bg-red-600 text-white' : 'bg-white hover:bg-gray-200 text-black'}`}
+						className={`flex-1 px-4 py-2 rounded-none transition-colors ${danger ? 'bg-red-500 hover:bg-red-600 text-white' : 'bg-white hover:bg-gray-200 text-black'}`}
 					>
 						{confirmText}
 					</button>
@@ -285,7 +285,7 @@ function MembresContent() {
 							setFormData({ name: '', instagram: '', photo: '', bio: '' });
 							setShowForm(true);
 						}}
-						className="px-4 py-2 cursor-pointer border border-white/30 hover:bg-white text-white hover:text-black rounded-lg transition-all duration-300 ease-in-out flex items-center gap-2"
+						className="px-4 py-2 cursor-pointer border border-white/30 hover:bg-white text-white hover:text-black rounded-none transition-all duration-300 ease-in-out flex items-center gap-2"
 					>
 						<svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 							<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -297,7 +297,7 @@ function MembresContent() {
 
 			{showForm && (
 				<div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 overflow-y-auto w-full h-full" onClick={() => setShowForm(false)}>
-					<div className="bg-[#141414] border border-white/10 rounded-xl p-8 w-full max-w-2xl mt-9 my-8" onClick={(e) => e.stopPropagation()}>
+					<div className="bg-[#141414] border border-white/10 rounded-none p-8 w-full max-w-2xl mt-9 my-8" onClick={(e) => e.stopPropagation()}>
 						<h2 className="text-2xl font-display text-white mb-6">
 							{editingMember ? 'Modifier le membre' : 'Nouveau membre'}
 						</h2>
@@ -310,7 +310,7 @@ function MembresContent() {
 										value={formData.name}
 										onChange={(e) => setFormData({ ...formData, name: e.target.value })}
 										required
-										className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-lg text-white focus:outline-none focus:border-lfp-green"
+										className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-none text-white focus:outline-none focus:border-lfp-amber"
 									/>
 								</div>
 								<div className='w-1/2 pl-4'>
@@ -320,7 +320,7 @@ function MembresContent() {
 										value={formData.instagram}
 										onChange={(e) => setFormData({ ...formData, instagram: e.target.value })}
 										required
-										className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-lg text-white focus:outline-none focus:border-lfp-green"
+										className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-none text-white focus:outline-none focus:border-lfp-amber"
 									/>
 								</div>
 							</div>
@@ -338,20 +338,20 @@ function MembresContent() {
 									value={formData.bio}
 									onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
 									rows={3}
-									className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-lg text-white focus:outline-none focus:border-lfp-green resize-none"
+									className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-none text-white focus:outline-none focus:border-lfp-amber resize-none"
 								/>
 							</div>
 							<div className="flex gap-4 pt-4">
 								<button
 									type="button"
 									onClick={() => setShowForm(false)}
-									className="flex-1 px-4 py-3 border border-white/10 text-white/10 hover:text-white hover:border-white font-bold cursor-pointer rounded-lg transition-all duration-300 ease-in-out"
+									className="flex-1 px-4 py-3 border border-white/10 text-white/10 hover:text-white hover:border-white font-bold cursor-pointer rounded-none transition-all duration-300 ease-in-out"
 								>
 									Annuler
 								</button>
 								<button
 									type="submit"
-									className="flex-1 px-4 py-3 bg-white/50 text-black hover:bg-white border hover:border-white border-white/10 font-bold cursor-pointer rounded-lg transition-all duration-300 ease-in-out"
+									className="flex-1 px-4 py-3 bg-white/50 text-black hover:bg-white border hover:border-white border-white/10 font-bold cursor-pointer rounded-none transition-all duration-300 ease-in-out"
 								>
 									{editingMember ? 'Enregistrer' : 'Créer'}
 								</button>
@@ -371,9 +371,9 @@ function MembresContent() {
 
 			<div className="space-y-2">
 				{isLoading ? (
-					<div className="bg-[#141414] border border-white/10 rounded-xl p-8 text-center text-gray-400">Chargement...</div>
+					<div className="bg-[#141414] border border-white/10 rounded-none p-8 text-center text-gray-400">Chargement...</div>
 				) : members.length === 0 ? (
-					<div className="bg-[#141414] border border-white/10 rounded-xl p-8 text-center text-gray-400">Aucun membre</div>
+					<div className="bg-[#141414] border border-white/10 rounded-none p-8 text-center text-gray-400">Aucun membre</div>
 				) : (
 					members.map((member, index) => {
 						const isDraggingOver = dragOverIndex === index;
@@ -386,7 +386,7 @@ function MembresContent() {
 								onDragOver={(e) => handleDragOver(e, index)}
 								onDrop={() => handleDrop(index)}
 								onDragEnd={handleDragEnd}
-								className={`flex items-center gap-4 bg-[#141414] border rounded-xl p-3 transition-all ${
+								className={`flex items-center gap-4 bg-[#141414] border rounded-none p-3 transition-all ${
 									member.isActive ? 'border-white/10' : 'border-red-500/30 opacity-60'
 								} ${isDraggingOver ? 'border-white/40 bg-white/5 scale-[1.01]' : ''} ${
 									canEdit ? 'cursor-grab active:cursor-grabbing' : ''
@@ -402,7 +402,7 @@ function MembresContent() {
 
 								<span className="text-2xl font-black text-white/20 shrink-0 w-8 text-center">#{index + 1}</span>
 
-								<div className="relative w-12 h-12 rounded-full overflow-hidden bg-white/10 shrink-0">
+								<div className="relative w-12 h-12 rounded-none overflow-hidden bg-white/10 shrink-0">
 									{member.photo ? (
 										<Image
 											src={member.photo}
@@ -421,7 +421,7 @@ function MembresContent() {
 								<div className="flex-1 min-w-0">
 									<div className="flex items-center gap-2">
 										<h3 className="text-white font-medium truncate">{member.name}</h3>
-										<span className={`shrink-0 px-2 py-0.5 rounded-full text-xs font-medium ${member.isActive ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}>
+										<span className={`shrink-0 px-2 py-0.5 rounded-none text-xs font-medium ${member.isActive ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}>
 											{member.isActive ? 'Actif' : 'Suspendu'}
 										</span>
 									</div>
@@ -459,7 +459,7 @@ function MembresContent() {
 									{canEdit && (
 										<button
 											onClick={() => handleEdit(member)}
-											className="p-2 hover:bg-white/10 rounded-lg transition-colors cursor-pointer"
+											className="p-2 hover:bg-white/10 rounded-none transition-colors cursor-pointer"
 											title="Modifier"
 										>
 											<svg className="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -470,7 +470,7 @@ function MembresContent() {
 									{canEdit && (
 										<button
 											onClick={() => handleToggleActive(member)}
-											className={`p-2 rounded-lg transition-colors cursor-pointer ${member.isActive ? 'hover:bg-yellow-500/10' : 'hover:bg-green-500/10'}`}
+											className={`p-2 rounded-none transition-colors cursor-pointer ${member.isActive ? 'hover:bg-yellow-500/10' : 'hover:bg-green-500/10'}`}
 											title={member.isActive ? 'Suspendre' : 'Réactiver'}
 										>
 											{member.isActive ? (
@@ -487,7 +487,7 @@ function MembresContent() {
 									{canDelete && (
 										<button
 											onClick={() => handleDelete(member.id, member.name)}
-											className="p-2 hover:bg-red-500/10 rounded-lg transition-colors cursor-pointer"
+											className="p-2 hover:bg-red-500/10 rounded-none transition-colors cursor-pointer"
 											title="Supprimer définitivement"
 										>
 											<svg className="w-5 h-5 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">

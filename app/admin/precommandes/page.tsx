@@ -150,7 +150,7 @@ function PrecommandesContent() {
               resetForm();
               setShowForm(true);
             }}
-            className="px-4 py-2 bg-white text-black hover:bg-gray-200 cursor-pointer font-medium rounded-lg transition-colors flex items-center gap-2"
+            className="px-4 py-2 bg-white text-black hover:bg-gray-200 cursor-pointer font-medium rounded-none transition-colors flex items-center gap-2"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -163,7 +163,7 @@ function PrecommandesContent() {
       {/* Formulaire campagne */}
       {showForm && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 overflow-y-auto">
-          <div className="bg-[#141414] border border-white/10 rounded-xl p-8 w-full max-w-lg my-8">
+          <div className="bg-[#141414] border border-white/10 rounded-none p-8 w-full max-w-lg my-8">
             <h2 className="text-2xl font-display text-white mb-6">
               {editing ? 'Modifier la campagne' : 'Nouvelle campagne'}
             </h2>
@@ -176,7 +176,7 @@ function PrecommandesContent() {
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   required
                   placeholder="Drop Hiver 2026"
-                  className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-lg text-white focus:outline-none focus:border-lfp-green"
+                  className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-none text-white focus:outline-none focus:border-lfp-amber"
                 />
               </div>
               <div>
@@ -185,7 +185,7 @@ function PrecommandesContent() {
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   rows={3}
-                  className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-lg text-white focus:outline-none focus:border-lfp-green resize-none"
+                  className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-none text-white focus:outline-none focus:border-lfp-amber resize-none"
                 />
               </div>
               <div className="grid grid-cols-2 gap-4">
@@ -196,7 +196,7 @@ function PrecommandesContent() {
                     value={formData.startDate}
                     onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
                     required
-                    className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-lg text-white focus:outline-none focus:border-lfp-green"
+                    className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-none text-white focus:outline-none focus:border-lfp-amber"
                   />
                 </div>
                 <div>
@@ -206,7 +206,7 @@ function PrecommandesContent() {
                     value={formData.endDate}
                     onChange={(e) => setFormData({ ...formData, endDate: e.target.value })}
                     required
-                    className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-lg text-white focus:outline-none focus:border-lfp-green"
+                    className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-none text-white focus:outline-none focus:border-lfp-amber"
                   />
                 </div>
               </div>
@@ -215,7 +215,7 @@ function PrecommandesContent() {
                 <select
                   value={formData.status}
                   onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-                  className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-lg text-white focus:outline-none focus:border-lfp-green cursor-pointer"
+                  className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-none text-white focus:outline-none focus:border-lfp-amber cursor-pointer"
                 >
                   {STATUS_OPTIONS.map((status) => (
                     <option key={status} value={status}>
@@ -229,13 +229,13 @@ function PrecommandesContent() {
                 <button
                   type="button"
                   onClick={() => setShowForm(false)}
-                  className="flex-1 px-4 py-3 border border-white/10 text-gray-400 hover:border-white hover:text-white cursor-pointer rounded-lg transition-colors"
+                  className="flex-1 px-4 py-3 border border-white/10 text-gray-400 hover:border-white hover:text-white cursor-pointer rounded-none transition-colors"
                 >
                   Annuler
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 px-4 py-3 bg-white text-black hover:bg-gray-200 cursor-pointer font-medium rounded-lg transition-colors"
+                  className="flex-1 px-4 py-3 bg-white text-black hover:bg-gray-200 cursor-pointer font-medium rounded-none transition-colors"
                 >
                   {editing ? 'Enregistrer' : 'Créer'}
                 </button>
@@ -248,7 +248,7 @@ function PrecommandesContent() {
       {/* Vue production */}
       {productionCampaign && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 overflow-y-auto">
-          <div className="bg-[#141414] border border-white/10 rounded-xl p-8 w-full max-w-lg my-8">
+          <div className="bg-[#141414] border border-white/10 rounded-none p-8 w-full max-w-lg my-8">
             <div className="flex items-start justify-between mb-6">
               <div>
                 <h2 className="text-2xl font-display text-white">À produire</h2>
@@ -274,7 +274,7 @@ function PrecommandesContent() {
                       {line.productName}
                       {line.variantLabel && <span className="text-gray-500"> · {line.variantLabel}</span>}
                     </span>
-                    <span className="text-lfp-green font-semibold tabular-nums">×{line.quantity}</span>
+                    <span className="text-lfp-amber font-semibold tabular-nums">×{line.quantity}</span>
                   </div>
                 ))}
                 <div className="flex items-center justify-between pt-4 mt-2">
@@ -295,15 +295,15 @@ function PrecommandesContent() {
           <div className="text-center text-gray-400 py-12">Aucune campagne</div>
         ) : (
           campaigns.map((campaign) => (
-            <div key={campaign.id} className="bg-[#141414] border border-white/10 rounded-xl p-6">
+            <div key={campaign.id} className="bg-[#141414] border border-white/10 rounded-none p-6">
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-1">
                     <h3 className="text-xl font-display text-white">{campaign.name}</h3>
                     <span
-                      className={`px-3 py-1 rounded-full text-xs ${
+                      className={`px-3 py-1 rounded-none text-xs ${
                         campaign.status === 'OPEN'
-                          ? 'bg-lfp-green/20 text-lfp-green'
+                          ? 'bg-lfp-amber/20 text-lfp-amber'
                           : campaign.status === 'IN_PRODUCTION'
                             ? 'bg-orange-500/20 text-orange-300'
                             : 'bg-white/10 text-gray-400'
@@ -323,14 +323,14 @@ function PrecommandesContent() {
                 <div className="flex flex-col gap-2">
                   <button
                     onClick={() => openProduction(campaign)}
-                    className="px-4 py-2 bg-lfp-green/20 hover:bg-lfp-green/30 text-lfp-green text-sm cursor-pointer rounded-lg transition-colors"
+                    className="px-4 py-2 bg-lfp-amber/20 hover:bg-lfp-amber/30 text-lfp-amber text-sm cursor-pointer rounded-none transition-colors"
                   >
                     Production
                   </button>
                   {canEdit && (
                     <button
                       onClick={() => handleEdit(campaign)}
-                      className="px-4 py-2 bg-white text-black hover:bg-gray-200 cursor-pointer font-medium rounded-lg transition-colors text-sm"
+                      className="px-4 py-2 bg-white text-black hover:bg-gray-200 cursor-pointer font-medium rounded-none transition-colors text-sm"
                     >
                       Modifier
                     </button>
@@ -338,7 +338,7 @@ function PrecommandesContent() {
                   {canDelete && (
                     <button
                       onClick={() => handleDelete(campaign.id)}
-                      className="px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 text-sm cursor-pointer rounded-lg transition-colors"
+                      className="px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 text-sm cursor-pointer rounded-none transition-colors"
                     >
                       Supprimer
                     </button>

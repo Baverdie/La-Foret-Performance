@@ -50,7 +50,7 @@ function statusBadgeClass(status: string): string {
     case 'SHIPPED':
       return 'bg-violet-500/20 text-violet-300';
     case 'DELIVERED':
-      return 'bg-lfp-green/20 text-lfp-green';
+      return 'bg-lfp-amber/20 text-lfp-amber';
     case 'CANCELLED':
     case 'REFUNDED':
       return 'bg-red-500/20 text-red-300';
@@ -130,7 +130,7 @@ function CommandesContent() {
           <button
             key={status}
             onClick={() => setFilter(status)}
-            className={`px-4 py-2 rounded-lg text-sm transition-colors cursor-pointer ${
+            className={`px-4 py-2 rounded-none text-sm transition-colors cursor-pointer ${
               filter === status ? 'bg-white text-black' : 'bg-white/10 text-gray-400 hover:bg-white/20'
             }`}
           >
@@ -142,7 +142,7 @@ function CommandesContent() {
       {/* Detail commande */}
       {selected && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 overflow-y-auto">
-          <div className="bg-[#141414] border border-white/10 rounded-xl p-8 w-full max-w-lg my-8">
+          <div className="bg-[#141414] border border-white/10 rounded-none p-8 w-full max-w-lg my-8">
             <div className="flex items-start justify-between mb-6">
               <div>
                 <h2 className="text-2xl font-display text-white">{selected.orderNumber}</h2>
@@ -154,7 +154,7 @@ function CommandesContent() {
             </div>
 
             {/* Client */}
-            <div className="bg-[#0a0a0a] rounded-lg p-4 mb-4 text-sm">
+            <div className="bg-[#0a0a0a] rounded-none p-4 mb-4 text-sm">
               <p className="text-white">{selected.firstName} {selected.lastName}</p>
               <p className="text-gray-400">{selected.email}</p>
               {selected.phone && <p className="text-gray-400">{selected.phone}</p>}
@@ -165,7 +165,7 @@ function CommandesContent() {
                 {selected.postalCode} {selected.city}, {selected.country}
               </p>
               {selected.campaign && (
-                <p className="text-lfp-green text-xs mt-2">Précommande : {selected.campaign.name}</p>
+                <p className="text-lfp-amber text-xs mt-2">Précommande : {selected.campaign.name}</p>
               )}
             </div>
 
@@ -203,7 +203,7 @@ function CommandesContent() {
                 <select
                   value={selected.status}
                   onChange={(e) => updateStatus(selected.id, e.target.value)}
-                  className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-lg text-white focus:outline-none focus:border-lfp-green cursor-pointer"
+                  className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-none text-white focus:outline-none focus:border-lfp-amber cursor-pointer"
                 >
                   {STATUS_FLOW.map((status) => (
                     <option key={status} value={status}>
@@ -228,12 +228,12 @@ function CommandesContent() {
             <button
               key={order.id}
               onClick={() => setSelected(order)}
-              className="w-full text-left bg-[#141414] border border-white/10 rounded-xl p-5 flex items-center justify-between gap-4 hover:border-white/30 transition-colors cursor-pointer"
+              className="w-full text-left bg-[#141414] border border-white/10 rounded-none p-5 flex items-center justify-between gap-4 hover:border-white/30 transition-colors cursor-pointer"
             >
               <div className="min-w-0">
                 <div className="flex items-center gap-3">
                   <span className="text-white font-medium">{order.orderNumber}</span>
-                  <span className={`px-2.5 py-1 rounded-full text-xs ${statusBadgeClass(order.status)}`}>
+                  <span className={`px-2.5 py-1 rounded-none text-xs ${statusBadgeClass(order.status)}`}>
                     {ORDER_STATUS_LABELS[order.status]}
                   </span>
                 </div>

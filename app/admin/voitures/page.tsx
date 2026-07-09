@@ -44,7 +44,7 @@ function getPatternPosition(index: number): { label: string; short: string; colo
 
 function GaragePatternLegend() {
   return (
-    <div className="bg-[#141414] border border-white/10 rounded-xl p-6 mb-8">
+    <div className="bg-[#141414] border border-white/10 rounded-none p-6 mb-8">
       <h2 className="text-sm text-white/40 uppercase tracking-[0.3em] mb-4">Pattern de galerie — 6 positions par bloc</h2>
       <div className="flex flex-col lg:flex-row gap-6 items-start">
         <div className="w-full lg:w-72 shrink-0 space-y-1.5">
@@ -110,19 +110,19 @@ function ConfirmModal({ isOpen, title, message, confirmText = 'Confirmer', dange
 
   return (
     <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-      <div className="bg-[#141414] border border-white/10 rounded-xl p-6 w-full max-w-md">
+      <div className="bg-[#141414] border border-white/10 rounded-none p-6 w-full max-w-md">
         <h3 className="text-xl font-display text-white mb-2">{title}</h3>
         <p className="text-gray-400 mb-6 whitespace-pre-line">{message}</p>
         <div className="flex gap-3">
           <button
             onClick={onCancel}
-            className="flex-1 px-4 py-2 border border-white/20 text-white rounded-lg hover:bg-white/10 transition-colors"
+            className="flex-1 px-4 py-2 border border-white/20 text-white rounded-none hover:bg-white/10 transition-colors"
           >
             Annuler
           </button>
           <button
             onClick={onConfirm}
-            className={`flex-1 px-4 py-2 rounded-lg transition-colors ${danger ? 'bg-red-500 hover:bg-red-600 text-white' : 'bg-white hover:bg-gray-200 text-black'}`}
+            className={`flex-1 px-4 py-2 rounded-none transition-colors ${danger ? 'bg-red-500 hover:bg-red-600 text-white' : 'bg-white hover:bg-gray-200 text-black'}`}
           >
             {confirmText}
           </button>
@@ -367,7 +367,7 @@ function VoituresContent() {
               resetForm();
               setShowForm(true);
             }}
-            className="px-4 py-2 bg-white text-black hover:bg-gray-200 cursor-pointer font-medium rounded-lg transition-colors flex items-center gap-2"
+            className="px-4 py-2 bg-white text-black hover:bg-gray-200 cursor-pointer font-medium rounded-none transition-colors flex items-center gap-2"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -379,7 +379,7 @@ function VoituresContent() {
 
       {showForm && (
         <div className="fixed inset-0 bg-black/80 flex items-start justify-center z-50 p-4 overflow-y-auto">
-          <div className="bg-[#141414] border border-white/10 rounded-xl p-8 w-full max-w-2xl my-8">
+          <div className="bg-[#141414] border border-white/10 rounded-none p-8 w-full max-w-2xl my-8">
             <h2 className="text-2xl font-display text-white mb-6">
               {editingCar ? 'Modifier la voiture' : 'Nouvelle voiture'}
             </h2>
@@ -393,7 +393,7 @@ function VoituresContent() {
                     onChange={(e) => setFormData({ ...formData, model: e.target.value })}
                     required
                     placeholder="BMW E30 316"
-                    className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-lg text-white focus:outline-none focus:border-lfp-green"
+                    className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-none text-white focus:outline-none focus:border-lfp-amber"
                   />
                 </div>
                 <div>
@@ -404,7 +404,7 @@ function VoituresContent() {
                     onChange={(e) => setFormData({ ...formData, year: e.target.value })}
                     required
                     placeholder="1988"
-                    className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-lg text-white focus:outline-none focus:border-lfp-green"
+                    className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-none text-white focus:outline-none focus:border-lfp-amber"
                   />
                 </div>
               </div>
@@ -415,7 +415,7 @@ function VoituresContent() {
                   value={formData.memberId}
                   onChange={(e) => setFormData({ ...formData, memberId: e.target.value })}
                   required
-                  className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-lg text-white focus:outline-none focus:border-lfp-green"
+                  className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-none text-white focus:outline-none focus:border-lfp-amber"
                 >
                   <option value="">Sélectionner un membre</option>
                   {members.map((member) => (
@@ -432,7 +432,7 @@ function VoituresContent() {
                     value={formData.engine}
                     onChange={(e) => setFormData({ ...formData, engine: e.target.value })}
                     placeholder="1.6L 4 cylindres"
-                    className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-lg text-white focus:outline-none focus:border-lfp-green"
+                    className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-none text-white focus:outline-none focus:border-lfp-amber"
                   />
                 </div>
                 <div>
@@ -442,7 +442,7 @@ function VoituresContent() {
                     value={formData.power}
                     onChange={(e) => setFormData({ ...formData, power: e.target.value })}
                     placeholder="102 ch"
-                    className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-lg text-white focus:outline-none focus:border-lfp-green"
+                    className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-none text-white focus:outline-none focus:border-lfp-amber"
                   />
                 </div>
               </div>
@@ -454,7 +454,7 @@ function VoituresContent() {
                   onChange={(e) => setFormData({ ...formData, modifications: e.target.value })}
                   rows={4}
                   placeholder={"Suspension KW V3\nÉchappement custom\nAdmission carbone\n..."}
-                  className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-lg text-white focus:outline-none focus:border-lfp-green resize-none"
+                  className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-none text-white focus:outline-none focus:border-lfp-amber resize-none"
                 />
                 <p className="text-xs text-gray-500 mt-1">Une modification par ligne</p>
               </div>
@@ -466,7 +466,7 @@ function VoituresContent() {
                   onChange={(e) => setFormData({ ...formData, story: e.target.value })}
                   rows={3}
                   placeholder="L'histoire de cette voiture..."
-                  className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-lg text-white focus:outline-none focus:border-lfp-green resize-none"
+                  className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-none text-white focus:outline-none focus:border-lfp-amber resize-none"
                 />
               </div>
 
@@ -504,7 +504,7 @@ function VoituresContent() {
                       return (
                         <div
                           key={index}
-                          className="relative bg-[#0a0a0a] border border-white/10 rounded-lg overflow-hidden"
+                          className="relative bg-[#0a0a0a] border border-white/10 rounded-none overflow-hidden"
                         >
                           <div className="relative h-24">
                             <Image
@@ -524,7 +524,7 @@ function VoituresContent() {
                             }}
                             className={`w-full px-2 py-1.5 text-xs transition-colors cursor-pointer ${
                               isContain
-                                ? 'bg-lfp-green text-white'
+                                ? 'bg-lfp-amber text-black'
                                 : 'bg-white/5 text-gray-400 hover:bg-white/10'
                             }`}
                           >
@@ -541,13 +541,13 @@ function VoituresContent() {
                 <button
                   type="button"
                   onClick={() => setShowForm(false)}
-                  className="flex-1 px-4 py-3 border border-white/10 text-gray-400 hover:text-white hover:border-white cursor-pointer rounded-lg transition-colors"
+                  className="flex-1 px-4 py-3 border border-white/10 text-gray-400 hover:text-white hover:border-white cursor-pointer rounded-none transition-colors"
                 >
                   Annuler
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 px-4 py-3 bg-white text-black hover:bg-gray-200 cursor-pointer rounded-lg transition-colors"
+                  className="flex-1 px-4 py-3 bg-white text-black hover:bg-gray-200 cursor-pointer rounded-none transition-colors"
                 >
                   {editingCar ? 'Enregistrer' : 'Créer'}
                 </button>
@@ -585,7 +585,7 @@ function VoituresContent() {
                 onDragOver={(e) => handleDragOver(e, index)}
                 onDrop={() => handleDrop(index)}
                 onDragEnd={handleDragEnd}
-                className={`flex items-center gap-4 bg-[#141414] border rounded-xl p-3 transition-all ${
+                className={`flex items-center gap-4 bg-[#141414] border rounded-none p-3 transition-all ${
                   car.isActive ? 'border-white/10' : 'border-red-500/30 opacity-60'
                 } ${isDraggingOver ? 'border-white/40 bg-white/5 scale-[1.01]' : ''} ${
                   canEdit ? 'cursor-grab active:cursor-grabbing' : ''
@@ -606,7 +606,7 @@ function VoituresContent() {
                   </span>
                 </div>
 
-                <div className="relative w-20 h-14 rounded-lg overflow-hidden bg-black shrink-0">
+                <div className="relative w-20 h-14 rounded-none overflow-hidden bg-black shrink-0">
                   {car.photos[0] ? (
                     <Image
                       src={car.photos[0]}
@@ -624,7 +624,7 @@ function VoituresContent() {
 
                 <div className="flex-1 min-w-0">
                   <h3 className="text-white font-medium truncate">{car.model}</h3>
-                  <p className="text-lfp-green text-sm">{car.year}</p>
+                  <p className="text-lfp-amber text-sm">{car.year}</p>
                   <p className="text-gray-500 text-xs truncate">{car.member?.name || 'N/A'} · {car.photos.length} photo{car.photos.length > 1 ? 's' : ''}</p>
                 </div>
 
@@ -663,7 +663,7 @@ function VoituresContent() {
                   {canEdit && (
                     <button
                       onClick={() => handleEdit(car)}
-                      className="px-3 py-2 bg-white/10 hover:bg-white/20 text-white text-sm rounded-lg transition-colors cursor-pointer"
+                      className="px-3 py-2 bg-white/10 hover:bg-white/20 text-white text-sm rounded-none transition-colors cursor-pointer"
                     >
                       Modifier
                     </button>
@@ -671,7 +671,7 @@ function VoituresContent() {
                   {canDelete && (
                     <button
                       onClick={() => handleDelete(car.id, car.model)}
-                      className="px-3 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 text-sm rounded-lg transition-colors cursor-pointer"
+                      className="px-3 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 text-sm rounded-none transition-colors cursor-pointer"
                     >
                       Supprimer
                     </button>

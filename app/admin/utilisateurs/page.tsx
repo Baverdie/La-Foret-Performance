@@ -20,19 +20,19 @@ function ConfirmModal({ isOpen, title, message, confirmText = 'Confirmer', dange
 
   return (
     <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-      <div className="bg-[#141414] border border-white/10 rounded-xl p-6 w-full max-w-md">
+      <div className="bg-[#141414] border border-white/10 rounded-none p-6 w-full max-w-md">
         <h3 className="text-xl font-display text-white mb-2">{title}</h3>
         <p className="text-gray-400 mb-6 whitespace-pre-line">{message}</p>
         <div className="flex gap-3">
           <button
             onClick={onCancel}
-            className="flex-1 px-4 py-2 border border-white/20 text-white rounded-lg hover:bg-white/10 transition-colors cursor-pointer"
+            className="flex-1 px-4 py-2 border border-white/20 text-white rounded-none hover:bg-white/10 transition-colors cursor-pointer"
           >
             Annuler
           </button>
           <button
             onClick={onConfirm}
-            className={`flex-1 px-4 py-2 rounded-lg transition-colors cursor-pointer ${danger ? 'bg-red-500 hover:bg-red-600 text-white' : 'bg-white hover:bg-gray-200 text-black'}`}
+            className={`flex-1 px-4 py-2 rounded-none transition-colors cursor-pointer ${danger ? 'bg-red-500 hover:bg-red-600 text-white' : 'bg-white hover:bg-gray-200 text-black'}`}
           >
             {confirmText}
           </button>
@@ -390,7 +390,7 @@ function UtilisateursContent() {
       />
 
       {message && (
-        <div className={`fixed top-4 right-4 z-50 px-6 py-4 rounded-lg ${message.type === 'success' ? 'bg-green-500 border border-green-700 text-white' : 'bg-red-500 border border-red-500 text-red-400'
+        <div className={`fixed top-4 right-4 z-50 px-6 py-4 rounded-none ${message.type === 'success' ? 'bg-green-500 border border-green-700 text-white' : 'bg-red-500 border border-red-500 text-red-400'
           }`}>
           {message.text}
         </div>
@@ -409,7 +409,7 @@ function UtilisateursContent() {
                 resetRoleForm();
                 setShowRoleForm(true);
               }}
-              className="px-4 py-2 bg-white text-black hover:bg-gray-200 cursor-pointer font-medium rounded-lg transition-colors"
+              className="px-4 py-2 bg-white text-black hover:bg-gray-200 cursor-pointer font-medium rounded-none transition-colors"
             >
               Nouveau rôle
             </button>
@@ -421,7 +421,7 @@ function UtilisateursContent() {
                 resetForm();
                 setShowForm(true);
               }}
-              className="px-4 py-2 bg-white text-black hover:bg-gray-200 cursor-pointer font-medium rounded-lg transition-colors flex items-center gap-2"
+              className="px-4 py-2 bg-white text-black hover:bg-gray-200 cursor-pointer font-medium rounded-none transition-colors flex items-center gap-2"
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -434,7 +434,7 @@ function UtilisateursContent() {
 
       {showRoleForm && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 overflow-y-auto">
-          <div className="bg-[#141414] border border-white/10 rounded-xl p-8 w-full max-w-2xl my-8">
+          <div className="bg-[#141414] border border-white/10 rounded-none p-8 w-full max-w-2xl my-8">
             <h2 className="text-2xl font-display text-white mb-6">
               {editingRole ? 'Modifier le rôle' : 'Nouveau rôle'}
             </h2>
@@ -449,7 +449,7 @@ function UtilisateursContent() {
                     required
                     disabled={!!editingRole && protectedRoles.includes(editingRole.name)}
                     placeholder="moderator"
-                    className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-lg text-white focus:outline-none focus:border-lfp-green disabled:opacity-50"
+                    className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-none text-white focus:outline-none focus:border-lfp-amber disabled:opacity-50"
                   />
                 </div>
                 <div>
@@ -459,7 +459,7 @@ function UtilisateursContent() {
                     value={roleFormData.description}
                     onChange={(e) => setRoleFormData({ ...roleFormData, description: e.target.value })}
                     placeholder="Modérateur de contenu"
-                    className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-lg text-white focus:outline-none focus:border-lfp-green"
+                    className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-none text-white focus:outline-none focus:border-lfp-amber"
                   />
                 </div>
               </div>
@@ -474,7 +474,7 @@ function UtilisateursContent() {
                         {permissions.map((perm) => (
                           <label
                             key={perm.key}
-                            className="flex items-center gap-2 p-2 bg-[#0a0a0a] rounded-lg cursor-pointer hover:bg-white/5 transition-colors"
+                            className="flex items-center gap-2 p-2 bg-[#0a0a0a] rounded-none cursor-pointer hover:bg-white/5 transition-colors"
                           >
                             <input
                               type="checkbox"
@@ -498,13 +498,13 @@ function UtilisateursContent() {
                     setShowRoleForm(false);
                     setEditingRole(null);
                   }}
-                  className="flex-1 px-4 py-3 border border-white/10 text-gray-400 hover:text-white hover:border-white cursor-pointer rounded-lg transition-colors"
+                  className="flex-1 px-4 py-3 border border-white/10 text-gray-400 hover:text-white hover:border-white cursor-pointer rounded-none transition-colors"
                 >
                   Annuler
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 px-4 py-3 bg-white text-black hover:bg-gray-200 cursor-pointer font-medium rounded-lg transition-colors"
+                  className="flex-1 px-4 py-3 bg-white text-black hover:bg-gray-200 cursor-pointer font-medium rounded-none transition-colors"
                 >
                   {editingRole ? 'Enregistrer' : 'Créer'}
                 </button>
@@ -516,7 +516,7 @@ function UtilisateursContent() {
 
       {showForm && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-          <div className="bg-[#141414] border border-white/10 rounded-xl p-8 w-full max-w-lg">
+          <div className="bg-[#141414] border border-white/10 rounded-none p-8 w-full max-w-lg">
             <h2 className="text-2xl font-display text-white mb-2">
               {editingUser ? 'Modifier l\'utilisateur' : 'Nouvel utilisateur'}
             </h2>
@@ -533,7 +533,7 @@ function UtilisateursContent() {
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   required
-                  className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-lg text-white focus:outline-none focus:border-lfp-green"
+                  className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-none text-white focus:outline-none focus:border-lfp-amber"
                 />
               </div>
 
@@ -544,7 +544,7 @@ function UtilisateursContent() {
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   required
-                  className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-lg text-white focus:outline-none focus:border-lfp-green"
+                  className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-none text-white focus:outline-none focus:border-lfp-amber"
                 />
               </div>
 
@@ -554,7 +554,7 @@ function UtilisateursContent() {
                   value={formData.roleId}
                   onChange={(e) => setFormData({ ...formData, roleId: e.target.value })}
                   required
-                  className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-lg text-white focus:outline-none focus:border-lfp-green"
+                  className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-none text-white focus:outline-none focus:border-lfp-amber"
                 >
                   <option value="">Sélectionner un rôle</option>
                   {roles.map((role) => (
@@ -572,7 +572,7 @@ function UtilisateursContent() {
                 <select
                   value={formData.memberId}
                   onChange={(e) => setFormData({ ...formData, memberId: e.target.value })}
-                  className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-lg text-white focus:outline-none focus:border-lfp-green"
+                  className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-none text-white focus:outline-none focus:border-lfp-amber"
                 >
                   <option value="">Aucun membre</option>
                   {members.map((member) => (
@@ -593,13 +593,13 @@ function UtilisateursContent() {
                     setShowForm(false);
                     setEditingUser(null);
                   }}
-                  className="flex-1 px-4 py-3 border border-white/10 text-gray-400 hover:text-white hover:border-white cursor-pointer rounded-lg transition-colors"
+                  className="flex-1 px-4 py-3 border border-white/10 text-gray-400 hover:text-white hover:border-white cursor-pointer rounded-none transition-colors"
                 >
                   Annuler
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 px-4 py-3 bg-white text-black hover:bg-gray-200 cursor-pointer font-medium rounded-lg transition-colors"
+                  className="flex-1 px-4 py-3 bg-white text-black hover:bg-gray-200 cursor-pointer font-medium rounded-none transition-colors"
                 >
                   {editingUser ? 'Enregistrer' : 'Créer et envoyer l\'invitation'}
                 </button>
@@ -613,7 +613,7 @@ function UtilisateursContent() {
         <h2 className="text-xl font-display text-white mb-4">Rôles</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {roles.map((role) => (
-            <div key={role.id} className="bg-[#141414] border border-white/10 rounded-xl p-4">
+            <div key={role.id} className="bg-[#141414] border border-white/10 rounded-none p-4">
               <div className="flex items-start justify-between mb-2">
                 <h3 className="text-white font-medium">{role.name}</h3>
                 {isSuperAdmin && !protectedRoles.includes(role.name) && (
@@ -659,7 +659,7 @@ function UtilisateursContent() {
         </div>
       </div>
 
-      <div className="bg-[#141414] border border-white/10 rounded-xl overflow-hidden">
+      <div className="bg-[#141414] border border-white/10 rounded-none overflow-hidden">
         <table className="w-full">
           <thead>
             <tr className="border-b border-white/10">
@@ -692,11 +692,11 @@ function UtilisateursContent() {
                         <img
                           src={user.member.photo}
                           alt={user.name}
-                          className="w-10 h-10 rounded-full object-cover"
+                          className="w-10 h-10 rounded-none object-cover"
                         />
                       ) : (
-                        <div className="w-10 h-10 bg-lfp-green/20 rounded-full flex items-center justify-center">
-                          <span className="text-lfp-green font-medium">
+                        <div className="w-10 h-10 bg-lfp-amber/20 rounded-none flex items-center justify-center">
+                          <span className="text-lfp-amber font-medium">
                             {user.name.charAt(0).toUpperCase()}
                           </span>
                         </div>
@@ -705,13 +705,13 @@ function UtilisateursContent() {
                         <p className="text-white font-medium">{user.name}</p>
                         <p className="text-gray-500 text-sm">{user.email}</p>
                         {user.member && (
-                          <p className="text-lfp-green text-xs">Lié à {user.member.name}</p>
+                          <p className="text-lfp-amber text-xs">Lié à {user.member.name}</p>
                         )}
                       </div>
                     </div>
                   </td>
                   <td className="px-6 py-4">
-                    <span className="px-3 py-1 bg-white/10 text-white text-sm rounded-full">
+                    <span className="px-3 py-1 bg-white/10 text-white text-sm rounded-none">
                       {user.role.name}
                     </span>
                   </td>
@@ -721,12 +721,12 @@ function UtilisateursContent() {
                   <td className="px-6 py-4">
                     <div className="flex flex-col gap-1">
                       {!user.isPasswordSet ? (
-                        <span className="px-2 py-1 rounded-full text-xs w-fit bg-yellow-500/20 text-yellow-400">
+                        <span className="px-2 py-1 rounded-none text-xs w-fit bg-yellow-500/20 text-yellow-400">
                           En attente
                         </span>
                       ) : (
                         <span
-                          className={`px-2 py-1 rounded-full text-xs w-fit ${user.isActive
+                          className={`px-2 py-1 rounded-none text-xs w-fit ${user.isActive
                               ? 'bg-green-500/20 text-green-400'
                               : 'bg-red-500/20 text-red-400'
                             }`}
@@ -741,7 +741,7 @@ function UtilisateursContent() {
                       {canEdit && !user.isPasswordSet && (
                         <button
                           onClick={() => handleResendInvite(user.id)}
-                          className="p-2 hover:bg-white/10 rounded-lg transition-colors cursor-pointer"
+                          className="p-2 hover:bg-white/10 rounded-none transition-colors cursor-pointer"
                           title="Renvoyer l'invitation"
                         >
                           <svg className="w-5 h-5 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -752,7 +752,7 @@ function UtilisateursContent() {
                       {canEdit && user.isPasswordSet && (
                         <button
                           onClick={() => handleResetPassword(user.id, user.name)}
-                          className="p-2 hover:bg-white/10 rounded-lg transition-colors cursor-pointer"
+                          className="p-2 hover:bg-white/10 rounded-none transition-colors cursor-pointer"
                           title="Réinitialiser le mot de passe"
                         >
                           <svg className="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -763,7 +763,7 @@ function UtilisateursContent() {
                       {canEdit && (
                         <button
                           onClick={() => handleEdit(user)}
-                          className="p-2 hover:bg-white/10 rounded-lg transition-colors cursor-pointer"
+                          className="p-2 hover:bg-white/10 rounded-none transition-colors cursor-pointer"
                           title="Modifier"
                         >
                           <svg className="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -774,7 +774,7 @@ function UtilisateursContent() {
                       {canDelete && user.id !== session?.user?.id && (
                         <button
                           onClick={() => handleDelete(user.id, user.name)}
-                          className="p-2 hover:bg-red-500/10 rounded-lg transition-colors cursor-pointer"
+                          className="p-2 hover:bg-red-500/10 rounded-none transition-colors cursor-pointer"
                           title="Supprimer"
                         >
                           <svg className="w-5 h-5 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">

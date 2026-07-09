@@ -156,7 +156,7 @@ function LogsContent() {
         <select
           value={filter.action}
           onChange={(e) => setFilter({ ...filter, action: e.target.value })}
-          className="px-4 py-2 bg-[#141414] border border-white/10 rounded-lg text-white focus:outline-none focus:border-lfp-green"
+          className="px-4 py-2 bg-[#141414] border border-white/10 rounded-none text-white focus:outline-none focus:border-lfp-amber"
         >
           <option value="">Toutes les actions</option>
           <option value="CREATE">Création</option>
@@ -169,7 +169,7 @@ function LogsContent() {
         <select
           value={filter.entity}
           onChange={(e) => setFilter({ ...filter, entity: e.target.value })}
-          className="px-4 py-2 bg-[#141414] border border-white/10 rounded-lg text-white focus:outline-none focus:border-lfp-green"
+          className="px-4 py-2 bg-[#141414] border border-white/10 rounded-none text-white focus:outline-none focus:border-lfp-amber"
         >
           <option value="">Toutes les entités</option>
           <option value="MEMBER">Membre</option>
@@ -189,7 +189,7 @@ function LogsContent() {
       </div>
 
       {/* Logs List */}
-      <div className="bg-[#141414] border border-white/10 rounded-xl overflow-hidden">
+      <div className="bg-[#141414] border border-white/10 rounded-none overflow-hidden">
         {isLoading ? (
           <div className="p-8 text-center text-gray-400">Chargement...</div>
         ) : filteredLogs.length === 0 ? (
@@ -200,7 +200,7 @@ function LogsContent() {
               <div key={log.id} className="p-4 hover:bg-white/5 transition-colors">
                 <div className="flex items-start gap-4">
                   {/* Icon */}
-                  <div className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-lg flex-shrink-0">
+                  <div className="w-10 h-10 bg-white/10 rounded-none flex items-center justify-center text-lg flex-shrink-0">
                     {getEntityIcon(log.entity)}
                   </div>
 
@@ -216,7 +216,7 @@ function LogsContent() {
                     </div>
 
                     <p className="text-white mb-1">
-                      <span className="text-lfp-green">{log.user.name}</span>
+                      <span className="text-lfp-amber">{log.user.name}</span>
                       {' '}a effectué une action
                       {log.details && (
                         <span className="text-gray-400">
@@ -257,14 +257,14 @@ function LogsContent() {
               <button
                 onClick={() => setPage(Math.max(1, page - 1))}
                 disabled={page === 1}
-                className="px-4 py-2 bg-white/10 hover:bg-white/20 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg transition-colors"
+                className="px-4 py-2 bg-white/10 hover:bg-white/20 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-none transition-colors"
               >
                 Précédent
               </button>
               <button
                 onClick={() => setPage(Math.min(pagination.totalPages, page + 1))}
                 disabled={page === pagination.totalPages}
-                className="px-4 py-2 bg-white/10 hover:bg-white/20 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg transition-colors"
+                className="px-4 py-2 bg-white/10 hover:bg-white/20 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-none transition-colors"
               >
                 Suivant
               </button>

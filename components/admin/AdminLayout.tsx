@@ -70,8 +70,8 @@ function MobileBlocker() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#0a0a0a] p-6">
       <div className="text-center max-w-sm">
-        <div className="w-16 h-16 bg-lfp-green/20 rounded-full flex items-center justify-center mx-auto mb-6">
-          <svg className="w-8 h-8 text-lfp-green" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <div className="w-16 h-16 bg-lfp-amber/20 rounded-none flex items-center justify-center mx-auto mb-6">
+          <svg className="w-8 h-8 text-lfp-amber" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
           </svg>
         </div>
@@ -81,7 +81,7 @@ function MobileBlocker() {
         </p>
         <a
           href="/admin"
-          className="inline-block px-6 py-3 bg-lfp-green text-white rounded-lg hover:bg-lfp-green/90 transition-colors"
+          className="inline-block px-6 py-3 bg-lfp-amber text-black rounded-none hover:bg-lfp-amber/90 transition-colors"
         >
           Retour au dashboard
         </a>
@@ -99,13 +99,13 @@ function MobileHeader() {
           alt="LFP"
           width={32}
           height={32}
-          className="rounded-full object-cover border border-white/20"
+          className="rounded-none object-cover border border-white/20"
         />
         <span className="text-white font-medium">Admin</span>
       </div>
       <button
         onClick={() => signOut({ callbackUrl: '/admin/login' })}
-        className="p-2 text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
+        className="p-2 text-red-400 hover:bg-red-500/10 rounded-none transition-colors"
       >
         <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -132,7 +132,7 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#0a0a0a]">
         <div className="flex flex-col items-center gap-4">
-          <svg className="animate-spin h-8 w-8 text-lfp-green" viewBox="0 0 24 24">
+          <svg className="animate-spin h-8 w-8 text-lfp-amber" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
           </svg>

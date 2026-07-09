@@ -268,7 +268,7 @@ function BoutiqueContent() {
   const currentRows = formData[rowsKey];
 
   const inputClass =
-    'w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-lg text-white focus:outline-none focus:border-lfp-green';
+    'w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-none text-white focus:outline-none focus:border-lfp-amber';
 
   return (
     <div>
@@ -284,7 +284,7 @@ function BoutiqueContent() {
               resetForm();
               setShowForm(true);
             }}
-            className="px-4 py-2 bg-white text-black hover:bg-gray-200 cursor-pointer font-medium rounded-lg transition-colors flex items-center gap-2"
+            className="px-4 py-2 bg-white text-black hover:bg-gray-200 cursor-pointer font-medium rounded-none transition-colors flex items-center gap-2"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -297,7 +297,7 @@ function BoutiqueContent() {
       {/* Formulaire produit */}
       {showForm && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 overflow-y-auto">
-          <div className="bg-[#141414] border border-white/10 rounded-xl p-8 w-full max-w-2xl my-8">
+          <div className="bg-[#141414] border border-white/10 rounded-none p-8 w-full max-w-2xl my-8">
             <h2 className="text-2xl font-display text-white mb-6">
               {editing ? 'Modifier le produit' : 'Nouveau produit'}
             </h2>
@@ -419,7 +419,7 @@ function BoutiqueContent() {
                     type="checkbox"
                     checked={formData.hasVariants}
                     onChange={(e) => setFormData({ ...formData, hasVariants: e.target.checked })}
-                    className="w-4 h-4 accent-lfp-green"
+                    className="w-4 h-4 accent-lfp-amber"
                   />
                   <span className="text-white text-sm">Ce produit a des variantes (tailles, couleurs…)</span>
                 </label>
@@ -462,7 +462,7 @@ function BoutiqueContent() {
                           value={row.value}
                           onChange={(e) => updateRow(index, 'value', e.target.value)}
                           placeholder={variantTab === 'SIZE' ? 'Taille (ex. M)' : 'Couleur (ex. Noir)'}
-                          className="flex-1 min-w-0 px-3 py-2 bg-[#0a0a0a] border border-white/10 rounded-lg text-white text-sm focus:outline-none focus:border-lfp-green"
+                          className="flex-1 min-w-0 px-3 py-2 bg-[#0a0a0a] border border-white/10 rounded-none text-white text-sm focus:outline-none focus:border-lfp-amber"
                         />
                         {/* Supplément de prix et stock : pertinents par taille uniquement */}
                         {variantTab === 'SIZE' && (
@@ -474,7 +474,7 @@ function BoutiqueContent() {
                               onChange={(e) => updateRow(index, 'priceDeltaEuros', e.target.value)}
                               placeholder="+€"
                               title="Supplément de prix (€)"
-                              className="w-20 px-3 py-2 bg-[#0a0a0a] border border-white/10 rounded-lg text-white text-sm focus:outline-none focus:border-lfp-green"
+                              className="w-20 px-3 py-2 bg-[#0a0a0a] border border-white/10 rounded-none text-white text-sm focus:outline-none focus:border-lfp-amber"
                             />
                             <input
                               type="number"
@@ -482,14 +482,14 @@ function BoutiqueContent() {
                               onChange={(e) => updateRow(index, 'stockLimit', e.target.value)}
                               placeholder="Stock"
                               title="Limite de stock optionnelle (vide = illimité)"
-                              className="w-24 px-3 py-2 bg-[#0a0a0a] border border-white/10 rounded-lg text-white text-sm focus:outline-none focus:border-lfp-green"
+                              className="w-24 px-3 py-2 bg-[#0a0a0a] border border-white/10 rounded-none text-white text-sm focus:outline-none focus:border-lfp-amber"
                             />
                           </>
                         )}
                         <button
                           type="button"
                           onClick={() => removeRow(index)}
-                          className="px-3 py-2 text-red-400 hover:bg-red-500/10 rounded-lg transition-colors cursor-pointer"
+                          className="px-3 py-2 text-red-400 hover:bg-red-500/10 rounded-none transition-colors cursor-pointer"
                         >
                           ✕
                         </button>
@@ -498,7 +498,7 @@ function BoutiqueContent() {
                     <button
                       type="button"
                       onClick={addRow}
-                      className="text-sm text-lfp-green hover:underline cursor-pointer"
+                      className="text-sm text-lfp-amber hover:underline cursor-pointer"
                     >
                       + Ajouter {variantTab === 'SIZE' ? 'une taille' : 'une couleur'}
                     </button>
@@ -517,7 +517,7 @@ function BoutiqueContent() {
                   type="checkbox"
                   checked={formData.isActive}
                   onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
-                  className="w-4 h-4 accent-lfp-green"
+                  className="w-4 h-4 accent-lfp-amber"
                 />
                 <span className="text-white text-sm">Produit visible dans la boutique</span>
               </label>
@@ -526,13 +526,13 @@ function BoutiqueContent() {
                 <button
                   type="button"
                   onClick={() => setShowForm(false)}
-                  className="flex-1 px-4 py-3 border border-white/10 text-gray-400 hover:border-white hover:text-white cursor-pointer rounded-lg transition-colors"
+                  className="flex-1 px-4 py-3 border border-white/10 text-gray-400 hover:border-white hover:text-white cursor-pointer rounded-none transition-colors"
                 >
                   Annuler
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 px-4 py-3 bg-white text-black hover:bg-gray-200 cursor-pointer font-medium rounded-lg transition-colors"
+                  className="flex-1 px-4 py-3 bg-white text-black hover:bg-gray-200 cursor-pointer font-medium rounded-none transition-colors"
                 >
                   {editing ? 'Enregistrer' : 'Créer'}
                 </button>
@@ -550,7 +550,7 @@ function BoutiqueContent() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
           {products.map((product) => (
-            <div key={product.id} className="bg-[#141414] border border-white/10 rounded-xl overflow-hidden">
+            <div key={product.id} className="bg-[#141414] border border-white/10 rounded-none overflow-hidden">
               <div className="relative aspect-4/5 bg-black">
                 {product.images[0] ? (
                   <Image src={product.images[0]} alt={product.name} fill sizes="400px" className="object-cover" />
@@ -560,7 +560,7 @@ function BoutiqueContent() {
                   </div>
                 )}
                 {!product.isActive && (
-                  <span className="absolute top-3 right-3 bg-black/70 text-white/70 text-xs px-2 py-1 rounded-full">
+                  <span className="absolute top-3 right-3 bg-black/70 text-white/70 text-xs px-2 py-1 rounded-none">
                     Masqué
                   </span>
                 )}
@@ -576,11 +576,11 @@ function BoutiqueContent() {
                   <span className="text-white font-semibold whitespace-nowrap">{formatEuros(product.basePrice)}</span>
                 </div>
                 <div className="flex flex-wrap gap-2 mt-3 text-xs">
-                  <span className="px-2 py-1 rounded-full bg-white/5 text-white/50">
+                  <span className="px-2 py-1 rounded-none bg-white/5 text-white/50">
                     {product.availabilityMode === 'PRECOMMANDE' ? 'Précommande' : 'À la demande'}
                   </span>
                   {product.hasVariants && (
-                    <span className="px-2 py-1 rounded-full bg-white/5 text-white/50">
+                    <span className="px-2 py-1 rounded-none bg-white/5 text-white/50">
                       {product.variants.length} variante(s)
                     </span>
                   )}
@@ -589,7 +589,7 @@ function BoutiqueContent() {
                   {canEdit && (
                     <button
                       onClick={() => handleEdit(product)}
-                      className="flex-1 px-4 py-2 bg-white text-black hover:bg-gray-200 cursor-pointer font-medium rounded-lg transition-colors text-sm"
+                      className="flex-1 px-4 py-2 bg-white text-black hover:bg-gray-200 cursor-pointer font-medium rounded-none transition-colors text-sm"
                     >
                       Modifier
                     </button>
@@ -597,7 +597,7 @@ function BoutiqueContent() {
                   {canDelete && (
                     <button
                       onClick={() => handleDelete(product.id)}
-                      className="px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 text-sm cursor-pointer rounded-lg transition-colors"
+                      className="px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 text-sm cursor-pointer rounded-none transition-colors"
                     >
                       Supprimer
                     </button>

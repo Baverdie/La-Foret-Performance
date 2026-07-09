@@ -66,7 +66,7 @@ function DatePicker({ value, onChange }: DatePickerProps) {
     }
   };
 
-  const selectClass = "px-3 py-3 bg-[#0a0a0a] border border-white/10 rounded-lg text-white focus:outline-none focus:border-lfp-green cursor-pointer";
+  const selectClass = "px-3 py-3 bg-[#0a0a0a] border border-white/10 rounded-none text-white focus:outline-none focus:border-lfp-amber cursor-pointer";
 
   return (
     <div className="grid grid-cols-3 gap-2">
@@ -258,7 +258,7 @@ function EventsContent() {
               resetForm();
               setShowForm(true);
             }}
-            className="px-4 py-2 bg-white text-black hover:bg-gray-200 cursor-pointer font-medium rounded-lg transition-colors flex items-center gap-2"
+            className="px-4 py-2 bg-white text-black hover:bg-gray-200 cursor-pointer font-medium rounded-none transition-colors flex items-center gap-2"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -273,7 +273,7 @@ function EventsContent() {
           <button
             key={f}
             onClick={() => setFilter(f)}
-            className={`px-4 py-2 rounded-lg text-sm transition-colors cursor-pointer ${filter === f
+            className={`px-4 py-2 rounded-none text-sm transition-colors cursor-pointer ${filter === f
                 ? 'bg-white text-black'
                 : 'bg-white/10 text-gray-400 hover:bg-white/20'
               }`}
@@ -285,7 +285,7 @@ function EventsContent() {
 
       {showForm && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 overflow-y-auto">
-          <div className="bg-[#141414] border border-white/10 rounded-xl p-8 w-full max-w-lg my-8">
+          <div className="bg-[#141414] border border-white/10 rounded-none p-8 w-full max-w-lg my-8">
             <h2 className="text-2xl font-display text-white mb-6">
               {editingEvent ? 'Modifier l\'événement' : 'Nouvel événement'}
             </h2>
@@ -298,7 +298,7 @@ function EventsContent() {
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                   required
                   placeholder="Balade Côte Sauvage"
-                  className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-lg text-white focus:outline-none focus:border-lfp-green"
+                  className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-none text-white focus:outline-none focus:border-lfp-amber"
                 />
               </div>
 
@@ -319,7 +319,7 @@ function EventsContent() {
                   onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                   required
                   placeholder="La Palmyre"
-                  className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-lg text-white focus:outline-none focus:border-lfp-green"
+                  className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-none text-white focus:outline-none focus:border-lfp-amber"
                 />
               </div>
 
@@ -330,7 +330,7 @@ function EventsContent() {
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   rows={3}
                   placeholder="Description de l'événement..."
-                  className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-lg text-white focus:outline-none focus:border-lfp-green resize-none"
+                  className="w-full px-4 py-3 bg-[#0a0a0a] border border-white/10 rounded-none text-white focus:outline-none focus:border-lfp-amber resize-none"
                 />
               </div>
 
@@ -347,13 +347,13 @@ function EventsContent() {
                 <button
                   type="button"
                   onClick={() => setShowForm(false)}
-                  className="flex-1 px-4 py-3 border border-white/10 text-gray-400 hover:border-white hover:text-white cursor-pointer rounded-lg transition-colors"
+                  className="flex-1 px-4 py-3 border border-white/10 text-gray-400 hover:border-white hover:text-white cursor-pointer rounded-none transition-colors"
                 >
                   Annuler
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 px-4 py-3 bg-white text-black hover:bg-gray-200 cursor-pointer font-medium rounded-lg transition-colors"
+                  className="flex-1 px-4 py-3 bg-white text-black hover:bg-gray-200 cursor-pointer font-medium rounded-none transition-colors"
                 >
                   {editingEvent ? 'Enregistrer' : 'Créer'}
                 </button>
@@ -372,10 +372,10 @@ function EventsContent() {
           filteredEvents.map((event) => (
             <div
               key={event.id}
-              className="bg-[#141414] border border-white/10 rounded-xl p-6 flex gap-6"
+              className="bg-[#141414] border border-white/10 rounded-none p-6 flex gap-6"
             >
               {event.photo && (
-                <div className="relative w-32 h-24 shrink-0 rounded-lg overflow-hidden bg-black">
+                <div className="relative w-32 h-24 shrink-0 rounded-none overflow-hidden bg-black">
                   <Image
                     src={event.photo}
                     alt={event.title}
@@ -399,7 +399,7 @@ function EventsContent() {
                     </p>
                   </div>
                   <span
-                    className={`px-3 py-1 rounded-full text-xs ${event.status === 'upcoming'
+                    className={`px-3 py-1 rounded-none text-xs ${event.status === 'upcoming'
                         ? 'bg-white/20 text-white'
                         : 'bg-gray-500/20 text-gray-400'
                       }`}
@@ -417,7 +417,7 @@ function EventsContent() {
                 {canEdit && (
                   <button
                     onClick={() => handleEdit(event)}
-                    className="px-4 py-2 bg-white text-black hover:bg-gray-200 cursor-pointer font-medium rounded-lg transition-colors"
+                    className="px-4 py-2 bg-white text-black hover:bg-gray-200 cursor-pointer font-medium rounded-none transition-colors"
                   >
                     Modifier
                   </button>
@@ -425,7 +425,7 @@ function EventsContent() {
                 {canDelete && (
                   <button
                     onClick={() => handleDelete(event.id)}
-                    className="px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 text-sm cursor-pointer rounded-lg transition-colors"
+                    className="px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 text-sm cursor-pointer rounded-none transition-colors"
                   >
                     Supprimer
                   </button>
