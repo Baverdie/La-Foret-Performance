@@ -16,6 +16,19 @@
 
 @import "tailwindcss";
 
+/* Tokens du design system (Tailwind v4 ignore tailwind.config.js sans @config :
+   les couleurs lfp-* et les familles font-* doivent etre declarees ici). */
+@theme {
+  --color-lfp-dark: #0a0a0a;
+  --color-lfp-green: #2d5016;
+  --color-lfp-accent: #ff4d00;
+  --color-lfp-amber: #ffce47;
+  --color-lfp-gray: #1a1a1a;
+  --font-display: 'Landasans', sans-serif;
+  --font-landasans: 'Landasans', sans-serif;
+  --font-body: 'Landasans', sans-serif;
+}
+
 :root {
   --background: #0a0a0a;
   --foreground: #ffffff;
