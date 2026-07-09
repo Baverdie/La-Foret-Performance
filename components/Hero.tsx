@@ -265,10 +265,8 @@ export default function Hero({ hasCrew, hasGarage, hasSorties }: HeroProps) {
 							<a
 								key={link.href}
 								href={link.href}
-								className={`transition-colors ${
-									link.href === '/shop'
-										? 'text-white hover:text-lfp-amber'
-										: 'hidden xl:block text-gray-400 hover:text-white'
+								className={`text-gray-400 hover:text-white transition-colors ${
+									link.href === '/shop' ? '' : 'hidden xl:block'
 								}`}
 								style={{ textShadow: '0 1px 8px rgba(0, 0, 0, 0.8)' }}
 							>
