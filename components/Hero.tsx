@@ -67,8 +67,9 @@ export default function Hero({ hasCrew, hasGarage, hasSorties }: HeroProps) {
 
 	// Titre lié 1:1 au scroll (MotionValues, aucun re-render, aucun lissage :
 	// un ressort ajoute latence et effet de recul, macOS lisse déjà la molette).
+	// Le titre accoste centré sur la rangée de nav desktop : py-5 (20px) + logo 40px → centre à 40px.
 	const titleScale = useTransform(scrollY, [0, 300], [1, 0.4]);
-	const titleY = useTransform(scrollY, [0, 300], [0, typeof window !== 'undefined' ? -(window.innerHeight / 2 - 50) : -350]);
+	const titleY = useTransform(scrollY, [0, 300], [0, typeof window !== 'undefined' ? -(window.innerHeight / 2 - 40) : -350]);
 	const scrollIndicatorOpacity = useTransform(scrollY, [0, 200], [1, 0]);
 
 	const topGradientOpacity = useTransform(scrollY, [100, 300], [0, 1]);
@@ -236,6 +237,46 @@ export default function Hero({ hasCrew, hasGarage, hasSorties }: HeroProps) {
 				style={{ opacity: topGradientOpacity }}
 				className="hidden md:block fixed top-0 left-0 right-0 h-24 md:h-28 bg-linear-to-b from-black via-black/80 to-transparent z-40 pointer-events-none"
 			/>
+
+			{/* Nav desktop : logo à gauche, liens à droite — le titre du hero vient s'accoster
+			    au centre entre les deux au scroll (z-45 : au-dessus du dégradé, sous le titre). */}
+			<motion.nav
+				initial={{ y: -24, opacity: 0 }}
+				animate={{ y: showNav ? 0 : -24, opacity: showNav ? 1 : 0 }}
+				transition={{ duration: 0.6, ease: 'easeOut' }}
+				className="hidden md:flex fixed top-0 left-0 right-0 z-45 items-center justify-between px-8 lg:px-12 py-5"
+			>
+				<a href="#hero" aria-label="Retour en haut">
+					<Image
+						src="https://oh7qghmltywp4luq.public.blob.vercel-storage.com/lfp/logo-lfp.jpg"
+						alt="LFP"
+						width={40}
+						height={40}
+						className="object-cover border border-white/15"
+					/>
+				</a>
+				{/* Ancres de sections dès xl uniquement (sous xl, le titre accosté les chevaucherait) ;
+				    le bloc est ancré à droite : une section qui apparaît/disparaît (ex. Sorties)
+				    étend simplement la liste vers la gauche sans rien déplacer d'autre. */}
+				<div className="flex items-center gap-6 xl:gap-8 text-xs uppercase tracking-[0.2em]">
+					{menuLinks
+						.filter((link) => link.href !== '#hero')
+						.map((link) => (
+							<a
+								key={link.href}
+								href={link.href}
+								className={`transition-colors ${
+									link.href === '/shop'
+										? 'text-white hover:text-lfp-amber'
+										: 'hidden xl:block text-gray-400 hover:text-white'
+								}`}
+								style={{ textShadow: '0 1px 8px rgba(0, 0, 0, 0.8)' }}
+							>
+								{link.label}
+							</a>
+						))}
+				</div>
+			</motion.nav>
 
 			<section
 				id='hero'
