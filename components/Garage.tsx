@@ -287,7 +287,7 @@ export default function Garage({
 								<div className="absolute inset-0 bg-linear-to-t from-black/80 to-transparent" />
 								<div className="absolute bottom-4 left-4 md:bottom-8 md:left-8">
 									<h3 className="text-2xl md:text-4xl font-display text-white mb-1 md:mb-2">{patternCars[0].model}</h3>
-									<p className="text-base md:text-xl text-lfp-amber">{patternCars[0].year}</p>
+									<p className="text-base md:text-xl text-gray-400 transition-colors duration-300 group-hover:text-lfp-amber">{patternCars[0].year}</p>
 								</div>
 								<div className="absolute top-4 right-4 md:top-6 md:right-6 w-10 h-10 md:w-12 md:h-12 bg-black/60 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
 									<svg className="w-5 h-5 md:w-6 md:h-6 text-lfp-amber drop-shadow-md" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -320,7 +320,7 @@ export default function Garage({
 										<div className="absolute inset-0 bg-linear-to-t from-black/80 to-transparent" />
 										<div className="absolute bottom-4 left-4 md:bottom-6 md:left-6">
 											<h3 className="text-xl md:text-3xl font-display text-white mb-1">{patternCars[1].model}</h3>
-											<p className="text-sm md:text-lg text-lfp-amber">{patternCars[1].year}</p>
+											<p className="text-sm md:text-lg text-gray-400 transition-colors duration-300 group-hover:text-lfp-amber">{patternCars[1].year}</p>
 										</div>
 										<div className="absolute top-4 right-4 md:top-5 md:right-5 w-9 h-9 md:w-10 md:h-10 bg-black/60 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
 											<svg className="w-4 h-4 md:w-5 md:h-5 text-lfp-amber drop-shadow-md" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -345,7 +345,7 @@ export default function Garage({
 										<div className="absolute inset-0 bg-linear-to-t from-black/80 to-transparent" />
 										<div className="absolute bottom-4 left-4 md:bottom-6 md:left-6">
 											<h3 className="text-xl md:text-3xl font-display text-white mb-1">{patternCars[2].model}</h3>
-											<p className="text-sm md:text-lg text-lfp-amber">{patternCars[2].year}</p>
+											<p className="text-sm md:text-lg text-gray-400 transition-colors duration-300 group-hover:text-lfp-amber">{patternCars[2].year}</p>
 										</div>
 										<div className="absolute top-4 right-4 md:top-5 md:right-5 w-9 h-9 md:w-10 md:h-10 bg-black/60 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
 											<svg className="w-4 h-4 md:w-5 md:h-5 text-lfp-amber drop-shadow-md" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -381,7 +381,7 @@ export default function Garage({
 											<div className="absolute inset-0 bg-linear-to-t from-black/80 to-transparent" />
 											<div className="absolute bottom-4 left-4 md:bottom-6 md:left-6">
 												<h3 className="text-lg md:text-2xl font-display text-white mb-1">{patternCars[3].model}</h3>
-												<p className="text-sm md:text-lg text-lfp-amber">{patternCars[3].year}</p>
+												<p className="text-sm md:text-lg text-gray-400 transition-colors duration-300 group-hover:text-lfp-amber">{patternCars[3].year}</p>
 											</div>
 											<div className="absolute top-4 right-4 md:top-5 md:right-5 w-9 h-9 md:w-10 md:h-10 bg-black/60 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
 												<svg className="w-4 h-4 md:w-5 md:h-5 text-lfp-amber drop-shadow-md" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -406,7 +406,7 @@ export default function Garage({
 											<div className="absolute inset-0 bg-linear-to-t from-black/80 to-transparent" />
 											<div className="absolute bottom-4 left-4 md:bottom-6 md:left-6">
 												<h3 className="text-lg md:text-2xl font-display text-white mb-1">{patternCars[4].model}</h3>
-												<p className="text-sm md:text-lg text-lfp-amber">{patternCars[4].year}</p>
+												<p className="text-sm md:text-lg text-gray-400 transition-colors duration-300 group-hover:text-lfp-amber">{patternCars[4].year}</p>
 											</div>
 											<div className="absolute top-4 right-4 md:top-5 md:right-5 w-9 h-9 md:w-10 md:h-10 bg-black/60 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
 												<svg className="w-4 h-4 md:w-5 md:h-5 text-lfp-amber drop-shadow-md" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -432,7 +432,7 @@ export default function Garage({
 										<div className="absolute inset-0 bg-linear-to-t from-black/80 to-transparent" />
 										<div className="absolute bottom-4 left-4 md:bottom-8 md:left-8">
 											<h3 className="text-xl md:text-3xl font-display text-white mb-1 md:mb-2">{patternCars[5].model}</h3>
-											<p className="text-base md:text-xl text-lfp-amber">{patternCars[5].year}</p>
+											<p className="text-base md:text-xl text-gray-400 transition-colors duration-300 group-hover:text-lfp-amber">{patternCars[5].year}</p>
 										</div>
 										<div className="absolute top-4 right-4 md:top-6 md:right-6 w-10 h-10 md:w-12 md:h-12 bg-black/60 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
 											<svg className="w-5 h-5 md:w-6 md:h-6 text-lfp-amber drop-shadow-md" fill="none" viewBox="0 0 24 24" stroke="currentColor">

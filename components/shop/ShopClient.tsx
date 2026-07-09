@@ -71,7 +71,7 @@ export default function ShopClient({ products, campaigns }: ShopClientProps) {
   return (
     <main className="max-w-7xl mx-auto px-6 md:px-12 py-16 md:py-24">
       {/* En-tete */}
-      <SectionHeading title="LA BOUTIQUE" subtitle="Le merch du crew" />
+      <SectionHeading title="LA BOUTIQUE" titleShort="BOUTIQUE" subtitle="Le merch du crew" />
 
       {/* Précommande active — ligne sobre, nom souligné ambre (direction C) */}
       {campaigns.length > 0 && (

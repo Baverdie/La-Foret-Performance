@@ -3,8 +3,17 @@
 import { motion } from 'framer-motion';
 
 // Titre de section — direction C (éditorial) : sur-titre court entre tirets, puis grand titre.
-// Parametres: title (titre affiché), subtitle (sur-titre court optionnel).
-export default function SectionHeading({ title, subtitle }: { title: string; subtitle?: string }) {
+// Parametres: title (titre affiché), subtitle (sur-titre optionnel),
+// titleShort (variante courte affichée sous sm pour tenir sur une ligne).
+export default function SectionHeading({
+  title,
+  subtitle,
+  titleShort,
+}: {
+  title: string;
+  subtitle?: string;
+  titleShort?: string;
+}) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -18,7 +27,14 @@ export default function SectionHeading({ title, subtitle }: { title: string; sub
         {subtitle && <span className="uppercase tracking-[0.4em] text-xs font-display whitespace-nowrap">{subtitle}</span>}
         <span>──</span>
       </div>
-      <h1 className="text-5xl md:text-7xl font-display tracking-widest uppercase text-white">{title}</h1>
+      {titleShort ? (
+        <>
+          <h1 className="sm:hidden text-5xl font-display tracking-widest uppercase text-white">{titleShort}</h1>
+          <h1 className="hidden sm:block text-5xl md:text-7xl font-display tracking-widest uppercase text-white">{title}</h1>
+        </>
+      ) : (
+        <h1 className="text-5xl md:text-7xl font-display tracking-widest uppercase text-white">{title}</h1>
+      )}
     </motion.div>
   );
 }

@@ -56,28 +56,90 @@ function logoBadge(logo: string, cx: number, cy: number, size: number, ring: str
     <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${ring}" stroke-width="3" opacity="0.85"/>`;
 }
 
-// Mockup t-shirt (vue de face a plat). Parametres: couleur tissu, accent, logo.
-function tshirtSvg(fabric: string, accent: string, logo: string): string {
-  const shape = `
-    M500 285
-    C460 285 420 272 388 250
-    L205 326 C194 331 191 345 198 356 L240 470 C245 482 257 488 268 484 L300 470
-    L300 980 C300 994 311 1005 325 1005 L675 1005 C689 1005 700 994 700 980 L700 470
-    L732 484 C743 488 755 482 760 470 L802 356 C809 345 806 331 795 326
-    L612 250 C580 272 540 285 500 285 Z`;
-  const shirt = `
-    <g>
-      <path d="${shape}" fill="${fabric}" stroke="#000000" stroke-opacity="0.35" stroke-width="2"/>
-      <path d="${shape}" fill="url(#fabricShade)"/>
-      <path d="M388 250 C430 296 570 296 612 250 C570 274 430 274 388 250 Z" fill="#000000" fill-opacity="0.22"/>
-      <path d="M398 256 C436 294 564 294 602 256" fill="none" stroke="${accent}" stroke-width="4" opacity="0.6"/>
-      <path d="M300 470 L300 500 M700 470 L700 500" stroke="#000000" stroke-opacity="0.18" stroke-width="3"/>
-    </g>`;
+// Mockup t-shirt réaliste (packshot de face) : silhouette à épaules tombantes, col côtelé,
+// ombrages de tissu multi-couches, plis discrets, ombre au sol, logo imprimé en grand.
+// Parametres: fabric (couleur tissu), accent (halo du fond), logo (data URI).
+function tshirtSvg(fabric: string, accent: string): string {
+  // Corps du tee, symétrique autour de x=500.
+  const body = `
+    M 395 262
+    C 360 268 330 284 310 300
+    C 282 328 248 385 232 428
+    C 252 452 275 468 298 478
+    C 315 463 332 451 346 444
+    C 340 610 340 778 346 934
+    C 448 952 552 952 654 934
+    C 660 778 660 610 654 444
+    C 668 451 685 463 702 478
+    C 725 468 748 452 768 428
+    C 752 385 718 328 690 300
+    C 670 284 640 268 605 262
+    C 572 294 428 294 395 262
+    Z`;
+
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
     ${background(accent)}
-    ${shirt}
-    ${logoBadge(logo, 500, 470, 210, accent)}
-    <rect x="425" y="650" width="150" height="6" rx="3" fill="${accent}" opacity="0.55"/>
+    <defs>
+      <clipPath id="teeClip"><path d="${body}"/></clipPath>
+      <linearGradient id="sideL" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#000" stop-opacity="0.42"/>
+        <stop offset="100%" stop-color="#000" stop-opacity="0"/>
+      </linearGradient>
+      <linearGradient id="sideR" x1="1" y1="0" x2="0" y2="0">
+        <stop offset="0%" stop-color="#000" stop-opacity="0.42"/>
+        <stop offset="100%" stop-color="#000" stop-opacity="0"/>
+      </linearGradient>
+      <linearGradient id="hemShade" x1="0" y1="1" x2="0" y2="0">
+        <stop offset="0%" stop-color="#000" stop-opacity="0.34"/>
+        <stop offset="100%" stop-color="#000" stop-opacity="0"/>
+      </linearGradient>
+      <radialGradient id="chestLight" cx="50%" cy="34%" r="46%">
+        <stop offset="0%" stop-color="#fff" stop-opacity="0.07"/>
+        <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
+      </radialGradient>
+      <filter id="soft" x="-40%" y="-40%" width="180%" height="180%">
+        <feGaussianBlur stdDeviation="14"/>
+      </filter>
+      <filter id="softer" x="-40%" y="-40%" width="180%" height="180%">
+        <feGaussianBlur stdDeviation="5"/>
+      </filter>
+    </defs>
+
+    <!-- ombre au sol -->
+    <ellipse cx="500" cy="955" rx="255" ry="26" fill="#000" opacity="0.5" filter="url(#soft)"/>
+
+    <!-- corps -->
+    <path d="${body}" fill="${fabric}"/>
+
+    <!-- ombrages et lumière (clippés dans le tee) -->
+    <g clip-path="url(#teeClip)">
+      <rect x="220" y="240" width="180" height="720" fill="url(#sideL)"/>
+      <rect x="600" y="240" width="180" height="720" fill="url(#sideR)"/>
+      <rect x="220" y="700" width="560" height="260" fill="url(#hemShade)"/>
+      <rect x="220" y="240" width="560" height="720" fill="url(#chestLight)"/>
+      <!-- creux d'aisselles -->
+      <ellipse cx="340" cy="452" rx="42" ry="26" fill="#000" opacity="0.28" filter="url(#soft)"/>
+      <ellipse cx="660" cy="452" rx="42" ry="26" fill="#000" opacity="0.28" filter="url(#soft)"/>
+      <!-- plis discrets -->
+      <path d="M 358 560 C 374 640 370 740 360 852" stroke="#000" stroke-opacity="0.13" stroke-width="9" fill="none" filter="url(#softer)"/>
+      <path d="M 642 560 C 626 640 630 740 640 852" stroke="#000" stroke-opacity="0.13" stroke-width="9" fill="none" filter="url(#softer)"/>
+      <path d="M 430 880 C 470 894 530 894 570 880" stroke="#000" stroke-opacity="0.10" stroke-width="8" fill="none" filter="url(#softer)"/>
+      <path d="M 455 545 C 462 620 460 700 456 760" stroke="#fff" stroke-opacity="0.05" stroke-width="10" fill="none" filter="url(#softer)"/>
+      <!-- ourlet -->
+      <path d="M 350 918 C 450 936 550 936 650 918" stroke="#000" stroke-opacity="0.22" stroke-width="2.5" fill="none"/>
+      <path d="M 350 908 C 450 926 550 926 650 908" stroke="#000" stroke-opacity="0.12" stroke-width="2" fill="none"/>
+      <!-- coutures de manches -->
+      <path d="M 316 306 C 330 358 340 402 346 444" stroke="#000" stroke-opacity="0.16" stroke-width="2.5" fill="none"/>
+      <path d="M 684 306 C 670 358 660 402 654 444" stroke="#000" stroke-opacity="0.16" stroke-width="2.5" fill="none"/>
+    </g>
+
+    <!-- col côtelé -->
+    <path d="M 388 258 C 428 300 572 300 612 258 C 604 246 596 240 588 236 C 556 270 444 270 412 236 C 404 240 396 246 388 258 Z"
+      fill="${fabric}" stroke="#000" stroke-opacity="0.3" stroke-width="2"/>
+    <path d="M 400 252 C 436 288 564 288 600 252" stroke="#000" stroke-opacity="0.3" stroke-width="2.5" fill="none"/>
+    <path d="M 412 240 C 444 272 556 272 588 240" stroke="#000" stroke-opacity="0.18" stroke-width="2" fill="none"/>
+    <!-- ombre du col sur la poitrine -->
+    <path d="M 400 262 C 436 300 564 300 600 262 C 566 312 434 312 400 262 Z" fill="#000" opacity="0.16" filter="url(#softer)"/>
   </svg>`;
 }
 
@@ -150,22 +212,55 @@ async function upload(slug: string, png: Buffer): Promise<string> {
 }
 
 async function main() {
-  const logo = await fetchLogoDataUri();
-  const accent = '#ff4d00';
-  const green = '#3f7d28';
+  const accent = '#ffce47';
+  const green = '#ffce47';
 
-  // slug produit -> SVG du mockup
-  const mockups: { slug: string; svg: string }[] = [
-    { slug: 't-shirt-lfp-classic', svg: tshirtSvg('#15171a', accent, logo) },
-    { slug: 't-shirt-drop-ete-precommande', svg: tshirtSvg('#cdbb9b', green, logo) },
-    { slug: 'casquette-lfp', svg: capSvg(accent, logo) },
-    { slug: 'pack-stickers-x8', svg: stickerSvg(accent, logo) },
+  // Logo en buffer : composité par sharp APRÈS le rendu SVG (l'<image> SVG rend mal via librsvg).
+  // Bords fondus par un masque alpha adouci → le carré du print se fond dans le tissu (sérigraphie).
+  const logoRes = await fetch(LOGO_URL);
+  const featherMask = await sharp(
+    Buffer.from(
+      `<svg width="264" height="264"><defs><filter id="b" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="12"/></filter></defs><rect x="18" y="18" width="228" height="228" rx="10" fill="#fff" filter="url(#b)"/></svg>`
+    )
+  )
+    .png()
+    .toBuffer();
+  const logoBuffer = Buffer.from(await logoRes.arrayBuffer());
+  // Tee sombre : bords fondus (le print se fond dans le tissu).
+  const printFeathered = await sharp(logoBuffer)
+    .resize(264, 264)
+    .ensureAlpha()
+    .composite([{ input: featherMask, blend: 'dest-in' }])
+    .png()
+    .toBuffer();
+  // Tee clair : bords nets à coins arrondis (un print sombre contrasté doit rester franc).
+  const crispMask = await sharp(
+    Buffer.from(`<svg width="264" height="264"><rect x="2" y="2" width="260" height="260" rx="8" fill="#fff"/></svg>`)
+  )
+    .png()
+    .toBuffer();
+  const printCrisp = await sharp(logoBuffer)
+    .resize(264, 264)
+    .ensureAlpha()
+    .composite([{ input: crispMask, blend: 'dest-in' }])
+    .png()
+    .toBuffer();
+
+  // slug produit -> SVG du mockup (t-shirts uniquement : stickers = vraie photo, casquette inchangée)
+  const mockups: { slug: string; svg: string; print: Buffer }[] = [
+    { slug: 't-shirt-lfp-classic', svg: tshirtSvg('#17181b', accent), print: printFeathered },
+    { slug: 't-shirt-drop-ete-precommande', svg: tshirtSvg('#c9b696', green), print: printCrisp },
   ];
 
   const preview = process.argv.includes('--preview');
 
   for (const mockup of mockups) {
-    const png = await render(mockup.svg);
+    // Rendu du vêtement puis impression du logo sur la poitrine.
+    const garment = await render(mockup.svg);
+    const png = await sharp(garment)
+      .composite([{ input: mockup.print, left: 368, top: 392 }])
+      .png()
+      .toBuffer();
 
     if (preview) {
       const path = `/tmp/mockup-${mockup.slug}.png`;

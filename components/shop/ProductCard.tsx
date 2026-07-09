@@ -34,7 +34,9 @@ export default function ProductCard({ product, index }: { product: PublicProduct
               Pas d'image
             </div>
           )}
-          <span className="absolute top-3 left-3 text-xs font-display text-white/60">
+          {/* Vignettage : assombrit les bords pour la lisibilité du numéro et du badge */}
+          <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_70px_rgba(0,0,0,0.5)]" />
+          <span className="absolute top-3 left-3 text-xs font-display text-white/80">
             {String(index + 1).padStart(2, '0')}
           </span>
           {isPrecommande && (

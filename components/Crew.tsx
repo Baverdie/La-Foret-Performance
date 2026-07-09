@@ -120,7 +120,7 @@ function MemberModal({
 
 										<div className="p-6">
 											<h4 className="text-2xl md:text-3xl font-display text-white mb-2">{car.model}</h4>
-											<p className="text-xl text-lfp-amber mb-4">{car.year}</p>
+											<p className="text-xl text-gray-400 transition-colors duration-300 group-hover:text-lfp-amber mb-4">{car.year}</p>
 											<div className="space-y-2">
 												<div className="flex justify-between items-center">
 													<span className="text-white/50 text-sm">Moteur</span>
