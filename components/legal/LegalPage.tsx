@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { SHOP_ENABLED } from '@/lib/shop/flags';
 
 interface LegalPageProps {
 	// Titre de la page (affiché en Landasans capitales).
@@ -23,9 +24,11 @@ export default function LegalPage({ title, updated, children }: LegalPageProps) 
 						<Link href="/" className="text-gray-400 hover:text-white transition-colors">
 							Le site
 						</Link>
-						<Link href="/shop" className="text-gray-400 hover:text-white transition-colors">
-							Boutique
-						</Link>
+						{SHOP_ENABLED && (
+							<Link href="/shop" className="text-gray-400 hover:text-white transition-colors">
+								Boutique
+							</Link>
+						)}
 					</nav>
 				</div>
 			</header>

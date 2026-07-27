@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import { SHOP_ENABLED } from '@/lib/shop/flags';
 
 // Liens vers la boutique.
 const SHOP_LINKS = [
@@ -83,10 +84,10 @@ export default function Footer({ hasCrew, hasGarage, hasSorties }: FooterProps) 
 					whileInView={{ opacity: 1, y: 0 }}
 					viewport={{ once: true }}
 					transition={{ duration: 0.6, delay: 0.1 }}
-					className="grid grid-cols-2 md:grid-cols-3 gap-10 border-t border-white/10 py-10 md:py-12"
+					className={`grid grid-cols-2 gap-10 border-t border-white/10 py-10 md:py-12 ${SHOP_ENABLED ? 'md:grid-cols-3' : ''}`}
 				>
 					<FooterColumn title="Navigation" links={navLinks} />
-					<FooterColumn title="Boutique" links={SHOP_LINKS} />
+					{SHOP_ENABLED && <FooterColumn title="Boutique" links={SHOP_LINKS} />}
 					<div>
 						<p className="text-white/40 text-xs uppercase tracking-[0.3em] mb-5 font-display">Suivez-nous</p>
 						<a

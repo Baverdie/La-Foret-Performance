@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
+import { SHOP_ENABLED } from '@/lib/shop/flags';
 
 interface HeroProps {
 	// Présence des sections conditionnelles : pilote les entrées du menu mobile.
@@ -19,7 +20,7 @@ export default function Hero({ hasCrew, hasGarage, hasSorties }: HeroProps) {
 		{ label: 'Le Crew', href: '#crew', show: hasCrew },
 		{ label: 'Le Garage', href: '#garage', show: hasGarage },
 		{ label: 'Les Sorties', href: '#sorties', show: hasSorties },
-		{ label: 'La Boutique', href: '/shop', show: true },
+		{ label: 'La Boutique', href: '/shop', show: SHOP_ENABLED },
 	].filter((link) => link.show);
 
 	const [displayText, setDisplayText] = useState('');
