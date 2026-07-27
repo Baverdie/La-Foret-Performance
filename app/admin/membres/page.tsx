@@ -296,7 +296,7 @@ function MembresContent() {
 			</div>
 
 			{showForm && (
-				<div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 overflow-y-auto w-full h-full" onClick={() => setShowForm(false)}>
+				<div className="fixed inset-0 bg-black/80 flex items-start justify-center z-50 p-4 overflow-y-auto w-full h-full" onClick={() => setShowForm(false)}>
 					<div className="bg-[#141414] border border-white/10 rounded-none p-8 w-full max-w-2xl mt-9 my-8" onClick={(e) => e.stopPropagation()}>
 						<h2 className="text-2xl font-display text-white mb-6">
 							{editingMember ? 'Modifier le membre' : 'Nouveau membre'}

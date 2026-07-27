@@ -296,7 +296,7 @@ function BoutiqueContent() {
 
       {/* Formulaire produit */}
       {showForm && (
-        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 overflow-y-auto">
+        <div className="fixed inset-0 bg-black/80 flex items-start justify-center z-50 p-4 overflow-y-auto">
           <div className="bg-[#141414] border border-white/10 rounded-none p-8 w-full max-w-2xl my-8">
             <h2 className="text-2xl font-display text-white mb-6">
               {editing ? 'Modifier le produit' : 'Nouveau produit'}

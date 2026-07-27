@@ -176,7 +176,7 @@ function CommandesContent() {
 
       {/* Detail commande */}
       {selected && (
-        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 overflow-y-auto">
+        <div className="fixed inset-0 bg-black/80 flex items-start justify-center z-50 p-4 overflow-y-auto">
           <div className="bg-[#141414] border border-white/10 rounded-none p-8 w-full max-w-lg my-8">
             <div className="flex items-start justify-between mb-6">
               <div>
