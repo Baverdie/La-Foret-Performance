@@ -1,4 +1,5 @@
 import { computeShippingCost } from './shipping';
+import { computeProcessingFee } from './fees';
 
 // Ligne de panier telle que stockee cote client (localStorage) — sert uniquement a l'affichage.
 // Les prix sont systematiquement recalcules cote serveur au checkout (jamais de confiance au client).
@@ -36,18 +37,21 @@ export interface ResolvedOrderLine {
 export interface OrderTotals {
   subtotal: number;
   shippingCost: number;
+  processingFee: number;
   total: number;
 }
 
 // Calcule les totaux d'une commande a partir des lignes resolues cote serveur.
 // Parametre: lines (lignes resolues avec prix de confiance).
-// Sortie: sous-total, frais de port et total, en centimes.
+// Sortie: sous-total, frais de port, frais de traitement et total, en centimes.
 export function computeOrderTotals(lines: ResolvedOrderLine[]): OrderTotals {
   const subtotal = lines.reduce((sum, line) => sum + line.lineTotal, 0);
   const shippingCost = computeShippingCost(subtotal);
+  const processingFee = computeProcessingFee(subtotal + shippingCost);
   return {
     subtotal,
     shippingCost,
-    total: subtotal + shippingCost,
+    processingFee,
+    total: subtotal + shippingCost + processingFee,
   };
 }

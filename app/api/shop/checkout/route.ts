@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import { getStripe } from '@/lib/stripe';
 import { computeOrderTotals, type ResolvedOrderLine, type CheckoutItemInput } from '@/lib/shop/cart';
+import { SHOP_ENABLED } from '@/lib/shop/flags';
 
 export const runtime = 'nodejs';
 
@@ -40,16 +41,29 @@ function validateCustomer(customer: CustomerInput | undefined): string | null {
 }
 
 // Genere un numero de commande lisible : LFP-<annee>-<sequence sur 4 chiffres>.
+// La sequence derive du plus grand numero existant (pas d'un count) : les suppressions
+// de commandes ne peuvent donc pas provoquer de collision sur l'index unique.
 async function generateOrderNumber(): Promise<string> {
   const year = new Date().getFullYear();
-  const startOfYear = new Date(year, 0, 1);
-  const count = await prisma.order.count({ where: { createdAt: { gte: startOfYear } } });
-  return `LFP-${year}-${String(count + 1).padStart(4, '0')}`;
+  const prefix = `LFP-${year}-`;
+  // Tri lexicographique valide grace au zero-padding fixe de la sequence.
+  const lastOrder = await prisma.order.findFirst({
+    where: { orderNumber: { startsWith: prefix } },
+    orderBy: { orderNumber: 'desc' },
+    select: { orderNumber: true },
+  });
+  const lastSequence = lastOrder ? parseInt(lastOrder.orderNumber.slice(prefix.length), 10) : 0;
+  return `${prefix}${String(lastSequence + 1).padStart(4, '0')}`;
 }
 
 // POST : valide le panier, recalcule les prix cote serveur, cree une commande PENDING
 // puis une session Stripe Checkout. Renvoie l'URL de paiement hebergee par Stripe.
 export async function POST(request: NextRequest) {
+  // Boutique désactivée (flag) : l'API de paiement est inaccessible.
+  if (!SHOP_ENABLED) {
+    return NextResponse.json({ error: 'Boutique indisponible' }, { status: 404 });
+  }
+
   try {
     const body = await request.json();
     const items: CheckoutItemInput[] = Array.isArray(body.items) ? body.items : [];
@@ -156,6 +170,7 @@ export async function POST(request: NextRequest) {
         country: customer.country?.trim() || 'FR',
         subtotal: totals.subtotal,
         shippingCost: totals.shippingCost,
+        processingFee: totals.processingFee,
         total: totals.total,
         status: 'PENDING',
         campaignId,
@@ -173,20 +188,32 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    // Creation de la session Stripe Checkout.
+    // Creation de la session Stripe Checkout. Paiement carte uniquement : les frais
+    // de traitement sont calibres sur le bareme carte (Klarna & co coutent plus cher).
     const session = await getStripe().checkout.sessions.create({
       mode: 'payment',
+      payment_method_types: ['card'],
       customer_email: order.email,
-      line_items: lines.map((line) => ({
-        quantity: line.quantity,
-        price_data: {
-          currency: 'eur',
-          unit_amount: line.unitPrice,
-          product_data: {
-            name: line.variantLabel ? `${line.productName} — ${line.variantLabel}` : line.productName,
+      line_items: [
+        ...lines.map((line) => ({
+          quantity: line.quantity,
+          price_data: {
+            currency: 'eur',
+            unit_amount: line.unitPrice,
+            product_data: {
+              name: line.variantLabel ? `${line.productName} — ${line.variantLabel}` : line.productName,
+            },
+          },
+        })),
+        {
+          quantity: 1,
+          price_data: {
+            currency: 'eur',
+            unit_amount: totals.processingFee,
+            product_data: { name: 'Frais de traitement' },
           },
         },
-      })),
+      ],
       shipping_options: [
         {
           shipping_rate_data: {

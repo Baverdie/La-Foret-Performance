@@ -7,6 +7,7 @@ import { useCart } from '@/components/shop/CartProvider';
 import AddressAutocomplete, { type SelectedAddress } from '@/components/shop/AddressAutocomplete';
 import { formatEuros } from '@/lib/shop/format';
 import { computeShippingCost } from '@/lib/shop/shipping';
+import { computeProcessingFee } from '@/lib/shop/fees';
 
 // Etat du formulaire de coordonnees client.
 interface FormState {
@@ -34,6 +35,19 @@ const INITIAL_FORM: FormState = {
 };
 
 // Champ de saisie reutilisable du formulaire de checkout.
+// Attributs d'autocomplétion navigateur par champ (facilite la saisie du checkout invité).
+const AUTOCOMPLETE_BY_FIELD: Record<keyof FormState, string> = {
+  email: 'email',
+  firstName: 'given-name',
+  lastName: 'family-name',
+  phone: 'tel',
+  addressLine1: 'address-line1',
+  addressLine2: 'address-line2',
+  postalCode: 'postal-code',
+  city: 'address-level2',
+  country: 'country-name',
+};
+
 function Field({
   label,
   name,
@@ -53,13 +67,16 @@ function Field({
 }) {
   return (
     <div className={full ? 'sm:col-span-2' : ''}>
-      <label className="block text-gray-400 text-xs mb-1.5">
+      <label htmlFor={name} className="block text-gray-400 text-xs mb-1.5">
         {label} {required && <span className="text-lfp-amber">*</span>}
       </label>
       <input
+        id={name}
+        name={name}
         type={type}
         value={value}
         required={required}
+        autoComplete={AUTOCOMPLETE_BY_FIELD[name]}
         onChange={(event) => onChange(name, event.target.value)}
         className="w-full bg-[#0a0a0a] border border-white/10 rounded-none px-4 py-3 text-white text-sm focus:border-lfp-amber focus:outline-none transition-colors"
       />
@@ -76,7 +93,8 @@ export default function CheckoutPage() {
   const [error, setError] = useState<string | null>(null);
 
   const shipping = computeShippingCost(subtotal);
-  const total = subtotal + shipping;
+  const processingFee = computeProcessingFee(subtotal + shipping);
+  const total = subtotal + shipping + processingFee;
 
   // Met a jour un champ du formulaire.
   const handleChange = (name: keyof FormState, value: string) => {
@@ -206,6 +224,10 @@ export default function CheckoutPage() {
               <div className="flex justify-between text-white/60">
                 <span>Frais de port</span>
                 <span>{formatEuros(shipping)}</span>
+              </div>
+              <div className="flex justify-between text-white/60">
+                <span>Frais de traitement</span>
+                <span>{formatEuros(processingFee)}</span>
               </div>
               <div className="flex justify-between text-white font-semibold pt-2 border-t border-white/10">
                 <span>Total</span>

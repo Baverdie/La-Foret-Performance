@@ -1,51 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import type Stripe from 'stripe';
-import prisma from '@/lib/prisma';
 import { getStripe } from '@/lib/stripe';
-import { sendOrderConfirmationEmail, sendNewOrderAdminNotification } from '@/lib/email';
+import {
+  markOrderPaidFromSession,
+  cancelOrderFromExpiredSession,
+  syncRefundFromStripe,
+} from '@/lib/shop/order-confirmation';
 
 export const runtime = 'nodejs';
-
-// Marque une commande comme payee (idempotent) puis envoie les emails de confirmation.
-// Parametre: session (session Stripe Checkout completee).
-async function handleCheckoutCompleted(session: Stripe.Checkout.Session): Promise<void> {
-  const orderId = session.metadata?.orderId;
-  if (!orderId) return;
-
-  const order = await prisma.order.findUnique({ where: { id: orderId }, include: { items: true } });
-  // Idempotence : on ne traite que les commandes encore en attente.
-  if (!order || order.status !== 'PENDING') return;
-
-  const paymentIntentId =
-    typeof session.payment_intent === 'string'
-      ? session.payment_intent
-      : session.payment_intent?.id || null;
-
-  const updated = await prisma.order.update({
-    where: { id: orderId },
-    data: { status: 'PAID', stripePaymentIntentId: paymentIntentId },
-    include: { items: true },
-  });
-
-  // Emails non bloquants : un echec d'envoi ne doit pas faire echouer le webhook.
-  try {
-    await sendOrderConfirmationEmail(updated);
-    await sendNewOrderAdminNotification(updated);
-  } catch (emailError) {
-    console.error('Error sending order emails:', emailError);
-  }
-}
-
-// Annule une commande dont la session de paiement a expire (si toujours en attente).
-async function handleCheckoutExpired(session: Stripe.Checkout.Session): Promise<void> {
-  const orderId = session.metadata?.orderId;
-  if (!orderId) return;
-
-  const order = await prisma.order.findUnique({ where: { id: orderId } });
-  if (!order || order.status !== 'PENDING') return;
-
-  await prisma.order.update({ where: { id: orderId }, data: { status: 'CANCELLED' } });
-}
 
 // POST : point d'entree du webhook Stripe. Verifie la signature sur le corps brut.
 export async function POST(request: NextRequest) {
@@ -73,10 +35,13 @@ export async function POST(request: NextRequest) {
   try {
     switch (event.type) {
       case 'checkout.session.completed':
-        await handleCheckoutCompleted(event.data.object as Stripe.Checkout.Session);
+        await markOrderPaidFromSession(event.data.object as Stripe.Checkout.Session);
         break;
       case 'checkout.session.expired':
-        await handleCheckoutExpired(event.data.object as Stripe.Checkout.Session);
+        await cancelOrderFromExpiredSession(event.data.object as Stripe.Checkout.Session);
+        break;
+      case 'charge.refunded':
+        await syncRefundFromStripe(event.data.object as Stripe.Charge);
         break;
       default:
         break;

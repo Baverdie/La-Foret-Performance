@@ -201,10 +201,20 @@ model Order {
   country               String      @default("FR")
   subtotal              Int
   shippingCost          Int
+  processingFee         Int         @default(0)
   total                 Int
   status                String      @default("PENDING") // PENDING | PAID | IN_PRODUCTION | SHIPPED | DELIVERED | CANCELLED | REFUNDED
+  trackingNumber        String?
+  paidAt                DateTime?
+  productionStartedAt   DateTime?
+  shippedAt             DateTime?
+  deliveredAt           DateTime?
+  cancelledAt           DateTime?
+  refundedAt            DateTime?
+  cancelRequestedAt     DateTime?
   stripeSessionId       String?     @unique
   stripePaymentIntentId String?
+  stripeRefundId        String?
   campaignId            String?     @db.ObjectId
   campaign              Campaign?   @relation(fields: [campaignId], references: [id])
   items                 OrderItem[]

@@ -36,10 +36,11 @@ export default function CgvPage() {
 
 			<h2>Article 3 — Prix</h2>
 			<p>
-				Les prix sont exprimés en euros, toutes taxes comprises, hors frais de livraison. Les frais de
-				livraison sont affichés avant validation de la commande. Le Vendeur se réserve le droit de
-				modifier ses prix à tout moment ; les produits sont facturés au tarif en vigueur au moment de
-				la validation de la commande.
+				Les prix sont exprimés en euros, toutes taxes comprises, hors frais de livraison et frais de
+				traitement. Les frais de livraison ainsi que des frais de traitement de la commande, identiques
+				quel que soit le moyen de paiement utilisé, sont affichés avant validation de la commande. Le
+				Vendeur se réserve le droit de modifier ses prix à tout moment ; les produits sont facturés au
+				tarif en vigueur au moment de la validation de la commande.
 			</p>
 
 			<h2>Article 4 — Commande et paiement</h2>

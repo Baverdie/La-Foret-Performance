@@ -2,6 +2,30 @@ import { NextRequest, NextResponse } from 'next/server';
 import { checkAuth, logAction } from '@/lib/api-utils';
 import { PERMISSIONS } from '@/lib/permissions';
 import prisma from '@/lib/prisma';
+import { sendOrderInProductionEmail } from '@/lib/email';
+
+// Passe en production toutes les commandes payées d'une campagne (avec email client).
+// Appelé quand la campagne passe au statut IN_PRODUCTION. Sortie : nombre de commandes.
+async function launchCampaignOrdersProduction(campaignId: string): Promise<number> {
+  const orders = await prisma.order.findMany({
+    where: { campaignId, status: 'PAID' },
+    include: { items: true },
+  });
+
+  for (const order of orders) {
+    await prisma.order.update({
+      where: { id: order.id },
+      data: { status: 'IN_PRODUCTION', productionStartedAt: new Date() },
+    });
+    // Email non bloquant : la bascule des commandes prime sur la notification.
+    try {
+      await sendOrderInProductionEmail(order);
+    } catch (emailError) {
+      console.error('Error sending production email:', emailError);
+    }
+  }
+  return orders.length;
+}
 
 export async function GET(
   request: NextRequest,
@@ -43,6 +67,11 @@ export async function PUT(
     const body = await request.json();
     const { name, description, startDate, endDate, status } = body;
 
+    const current = await prisma.campaign.findUnique({ where: { id } });
+    if (!current) {
+      return NextResponse.json({ error: 'Campagne non trouvée' }, { status: 404 });
+    }
+
     const campaign = await prisma.campaign.update({
       where: { id },
       data: {
@@ -54,9 +83,23 @@ export async function PUT(
       },
     });
 
-    await logAction(session!.user.id, 'UPDATE', 'CAMPAIGN', id, { status }, request);
+    // Bascule groupee : passage de la campagne en production = toutes ses commandes
+    // payees partent en production (avec email a chaque client).
+    let ordersLaunched = 0;
+    if (status === 'IN_PRODUCTION' && current.status !== 'IN_PRODUCTION') {
+      ordersLaunched = await launchCampaignOrdersProduction(id);
+    }
 
-    return NextResponse.json({ campaign });
+    await logAction(
+      session!.user.id,
+      'UPDATE',
+      'CAMPAIGN',
+      id,
+      { status, ...(ordersLaunched ? { ordersLaunched } : {}) },
+      request
+    );
+
+    return NextResponse.json({ campaign, ordersLaunched });
   } catch (error) {
     console.error('Error updating campaign:', error);
     return NextResponse.json({ error: 'Erreur serveur' }, { status: 500 });

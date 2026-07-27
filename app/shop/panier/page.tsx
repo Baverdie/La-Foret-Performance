@@ -7,6 +7,7 @@ import { Suspense } from 'react';
 import { useCart } from '@/components/shop/CartProvider';
 import { formatEuros } from '@/lib/shop/format';
 import { computeShippingCost } from '@/lib/shop/shipping';
+import { computeProcessingFee } from '@/lib/shop/fees';
 
 // Contenu du panier (separe pour permettre l'usage de useSearchParams sous Suspense).
 function PanierContent() {
@@ -15,7 +16,8 @@ function PanierContent() {
   const canceled = searchParams.get('canceled') === '1';
 
   const shipping = computeShippingCost(subtotal);
-  const total = subtotal + shipping;
+  const processingFee = computeProcessingFee(subtotal + shipping);
+  const total = subtotal + shipping + processingFee;
 
   if (!hydrated) {
     return <div className="py-24 text-center text-white/30">Chargement du panier…</div>;
@@ -103,6 +105,10 @@ function PanierContent() {
             <div className="flex justify-between text-white/60">
               <span>Frais de port</span>
               <span>{formatEuros(shipping)}</span>
+            </div>
+            <div className="flex justify-between text-white/60">
+              <span>Frais de traitement</span>
+              <span>{formatEuros(processingFee)}</span>
             </div>
             <div className="flex justify-between text-white font-semibold pt-3 border-t border-white/10">
               <span>Total</span>
