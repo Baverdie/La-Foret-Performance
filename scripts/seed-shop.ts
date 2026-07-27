@@ -11,6 +11,14 @@ function euros(value: number): number {
 }
 
 async function main() {
+  // Garde-fou : ce seed purge et recrée tout le catalogue (commandes comprises).
+  // Il ne doit JAMAIS tourner contre la base de production.
+  if (!process.env.DATABASE_URL?.includes('/lfp-dev')) {
+    console.error('⛔ Refusé : DATABASE_URL ne pointe pas sur lfp-dev (base de développement).');
+    console.error('   Ce seed est destructif et réservé à l\'environnement de dev.');
+    process.exit(1);
+  }
+
   console.log('🌱 Seed boutique : nettoyage des anciennes données mock...');
 
   // Reset propre du catalogue (donnees de test uniquement).
